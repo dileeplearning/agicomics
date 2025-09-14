@@ -291,6 +291,8 @@ def main():
 
     data = read_json(comics_path)
     comics = data.get("comics", [])
+    # Filter out comics marked invisible
+    comics = [c for c in comics if not (isinstance(c.get('visible'), bool) and c.get('visible') is False)]
     if not comics:
         print("ERROR: No comics in comics.json", file=sys.stderr)
         sys.exit(1)

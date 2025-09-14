@@ -84,6 +84,7 @@ def main():
             used_slugs.add(slug)
             title = prev.get("title") or title_from_slug(slug)
             desc = prev.get("description") or ""
+            visible = prev.get("visible") if isinstance(prev.get("visible"), bool) else True
         else:
             slug = slugify(name)
             base_slug = slug
@@ -94,6 +95,7 @@ def main():
             used_slugs.add(slug)
             title = title_from_slug(slug)
             desc = ""
+            visible = True
 
         comics.append({
             "file": name,
@@ -102,6 +104,7 @@ def main():
             "description": desc,
             "created": created,
             "ext": ext,
+            "visible": visible,
         })
 
     out = {"comics": comics}
@@ -113,4 +116,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
