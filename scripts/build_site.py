@@ -99,6 +99,11 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .share svg{width:22px;height:22px;display:block}
     .share img.icon-x{filter: invert(1)}
     .desc{margin-top:8px;max-width:800px;color:#d0d4d9;text-align:center}
+    details.expl{margin-top:12px;max-width:800px;text-align:left;background:#111521;border:1px solid #1f2633;border-radius:8px;overflow:hidden}
+    details.expl summary{cursor:pointer;list-style:none;padding:10px 12px;font-weight:600;color:#dbe3ff;background:#0f1420}
+    details.expl[open] summary{border-bottom:1px solid #1f2633}
+    details.expl .content{padding:10px 12px;color:#c9ced6;line-height:1.6}
+    details.expl .content p{margin:0 0 10px}
     a{color:var(--link);text-decoration:none}
     a:hover{color:var(--link-hover)}
     .nav-btn{position:absolute;top:-36px;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:16px;background:#151922;border:1px solid #222937;color:#dbe3ff;text-decoration:none}
@@ -107,6 +112,17 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .nav-btn.next{right:0}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
     """
+
+    # Optional collapsible explanation block (from description)
+    explanation_html = ""
+    _desc = (comic.get("description") or "").strip()
+    if _desc:
+        explanation_html = (
+            '<details class="expl">'
+            '<summary>Explanation</summary>'
+            f'<div class="content">{comic.get("description", "")}</div>'
+            '</details>'
+        )
 
     html = f"""<!doctype html>
 <html lang=\"en\">
@@ -121,7 +137,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
   </header>
   <main>
     <div class=\"comic\">
-      <img src=\"{image_url}\" alt=\"{comic['title']}\" loading=\"eager\">\n      <div class=\"desc\"><strong>{comic['title']}</strong><br>{comic.get('description','')}</div>
+      <img src=\"{image_url}\" alt=\"{comic['title']}\" loading=\"eager\">\n      <div class=\"desc\"><strong>{comic['title']}</strong></div>\n      {explanation_html}
       <div class=\"meta\"><a href=\"{direct_image_link}\">Direct image link</a> • <a href=\"{page_url}\">Permalink</a></div>
     </div>
     <nav class=\"nav\" aria-label=\"Comic navigation\">
@@ -199,6 +215,17 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
         og_extras.append(f'<meta property="og:image:type" content="{og_mime}">')
     og_extras_block = "\n  ".join(og_extras)
 
+    # Build optional explanation block from description
+    explanation_html = ""
+    desc_val = (comic.get('description') or '').strip()
+    if desc_val:
+        explanation_html = (
+            '<details class="expl">'
+            '<summary>Explanation</summary>'
+            f'<div class="content">{comic.get("description","")}</div>'
+            '</details>'
+        )
+
     size_attrs = ""
     if width and height:
         size_attrs = f" width=\"{int(width)}\" height=\"{int(height)}\""
@@ -215,7 +242,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
   <main>
     <div class=\"comic\">\n      <div class=\"img-wrap\">\n        <a class=\"nav-btn prev\" href=\"{path_prefix}c/{prev_slug}/\" aria-label=\"Previous comic\">&#8592;</a>
         <a class=\"nav-btn next\" href=\"{path_prefix}c/{next_slug}/\" aria-label=\"Next comic\">&#8594;</a>
-        <img src=\"{image_url}\" alt=\"{comic['title']}\" loading=\"eager\"{size_attrs}>\n      </div>\n      <div class=\"desc\"><strong>{comic['title']}</strong><br>{comic.get('description','')}</div>
+        <img src=\"{image_url}\" alt=\"{comic['title']}\" loading=\"eager\"{size_attrs}>\n      </div>\n      <div class=\"desc\"><strong>{comic['title']}</strong></div>\n      {explanation_html}
       <div class=\"meta\"><a href=\"{direct_image_link}\">Direct image link</a> • <a href=\"{canonical_url}\">Permalink</a></div>
       <div class=\"share\">\n+        <span class=\"label\">share on</span>
         <a href=\"{x_url}\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on X\" title=\"Share on X\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 4l16 16M20 4L4 20\"/></svg></a>
