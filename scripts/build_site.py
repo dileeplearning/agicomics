@@ -135,9 +135,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
       <a href=\"{reddit_url}\" target=\"_blank\" rel=\"noopener noreferrer\">Reddit</a>
     </div>
   </main>
-  <footer>
-    <small>© {cfg.get('author') or site_name}</small>
-  </footer>
+  
 </body>
 </html>"""
     return html
@@ -212,9 +210,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
       <div class=\"copyright\">© <a href=\"https://www.dileeplearning.com\" target=\"_blank\" rel=\"noopener noreferrer\">Dileep George</a></div>
     </div>
   </main>
-  <footer>
-    <small>© {cfg.get('author') or site_name}</small>
-  </footer>
+  
   <script>(function(){{function f(){{var h=window.innerHeight;var header=document.querySelector('header');var footer=document.querySelector('footer');var nav=document.querySelector('.nav');var share=document.querySelector('.share');var desc=document.querySelector('.desc');var r=0;[header,footer,nav,share,desc].forEach(function(el){{if(el)r+=el.offsetHeight;}});r+=40;var m=Math.max(120,h-r);document.documentElement.style.setProperty('--img-max-h',m+'px');}}window.addEventListener('load',f);window.addEventListener('resize',f);}})();</script>
 </body>
 </html>"""
