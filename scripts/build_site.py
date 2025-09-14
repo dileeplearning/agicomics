@@ -24,6 +24,7 @@ def load_site_config(root):
         "author": "",
         "description": "A comic series.",
         "twitter_handle": "",  # e.g. @yourhandle
+        "explanation_label": os.environ.get("EXPLANATION_LABEL", "Explanation"),
     }
     cfg_path = os.path.join(root, "site_config.json")
     if os.path.exists(cfg_path):
@@ -117,11 +118,12 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     explanation_html = ""
     _desc = (comic.get("description") or "").strip()
     if _desc:
+        expl_label = cfg.get("explanation_label") or "Explanation"
         explanation_html = (
-            '<details class="expl">'
-            '<summary>Explanation</summary>'
+            f'<details class="expl">'
+            f'<summary>{expl_label}</summary>'
             f'<div class="content">{comic.get("description", "")}</div>'
-            '</details>'
+            f'</details>'
         )
 
     html = f"""<!doctype html>
@@ -219,11 +221,12 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
     explanation_html = ""
     desc_val = (comic.get('description') or '').strip()
     if desc_val:
+        expl_label2 = cfg.get("explanation_label") or "Explanation"
         explanation_html = (
-            '<details class="expl">'
-            '<summary>Explanation</summary>'
+            f'<details class="expl">'
+            f'<summary>{expl_label2}</summary>'
             f'<div class="content">{comic.get("description","")}</div>'
-            '</details>'
+            f'</details>'
         )
 
     size_attrs = ""

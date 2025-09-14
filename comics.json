@@ -4,7 +4,7 @@
       "file": "ag_viewpoints 2.png",
       "slug": "ag-viewpoints-2",
       "title": "Artificial General Viewpoints",
-      "description": "",
+      "description": "It's that elephant thing",
       "created": "2020-03-03T23:41:37",
       "ext": ".png"
     },
@@ -148,7 +148,7 @@
       "file": "ag_dichotomy 2.png",
       "slug": "ag-dichotomy-2",
       "title": "Artificial General Dichotomy",
-      "description": "",
+      "description": "The only sensible explanation of system 1 and system 2",
       "created": "2022-05-24T02:04:31",
       "ext": ".png"
     },
@@ -156,7 +156,7 @@
       "file": "ag_sota 2.png",
       "slug": "ag-sota-2",
       "title": "Artificial General Sota",
-      "description": "",
+      "description": "SOTA: state of the art",
       "created": "2022-10-23T14:49:21",
       "ext": ".png"
     },
@@ -195,7 +195,7 @@
     {
       "file": "ag_congratulatory 2.png",
       "slug": "ag-congratulatory-2",
-      "title": "Artificial General Congratulatory",
+      "title": "Artificial General Technique",
       "description": "",
       "created": "2023-02-25T14:00:38",
       "ext": ".png"
@@ -211,7 +211,7 @@
     {
       "file": "ag_open 2.png",
       "slug": "ag-open-2",
-      "title": "Artificial General Open",
+      "title": "Artificial General Openness",
       "description": "",
       "created": "2023-03-26T17:29:03",
       "ext": ".png"
@@ -220,7 +220,7 @@
       "file": "ag_consciousness 2.png",
       "slug": "ag-consciousness-2",
       "title": "Artificial General Consciousness",
-      "description": "",
+      "description": "Probably Approximately Correct (PAC) learning refers to one of the theoretical results in machine learning",
       "created": "2023-08-04T23:18:42",
       "ext": ".png"
     },
@@ -259,7 +259,7 @@
     {
       "file": "ag_philosophy3 2.png",
       "slug": "ag-philosophy3-2",
-      "title": "Artificial General Philosophy3",
+      "title": "Artificial General Philosophy",
       "description": "",
       "created": "2024-09-05T08:29:14",
       "ext": ".png"
