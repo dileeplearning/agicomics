@@ -1,9 +1,17 @@
 {
   "comics": [
     {
+      "file": "ag_viewpoints 2.png",
+      "slug": "ag-viewpoints-2",
+      "title": "Artificial General Viewpoints",
+      "description": "",
+      "created": "2020-03-03T23:41:37",
+      "ext": ".png"
+    },
+    {
       "file": "ag_generality 2.png",
       "slug": "ag-generality-2",
-      "title": "Ag Generality 2",
+      "title": "Artificial General Generality",
       "description": "",
       "created": "2019-03-11T10:40:37",
       "ext": ".png"
@@ -11,7 +19,7 @@
     {
       "file": "agi_equivalence 2.png",
       "slug": "agi-equivalence-2",
-      "title": "Agi Equivalence 2",
+      "title": "Artificial General Equivalence",
       "description": "",
       "created": "2019-03-16T21:58:03",
       "ext": ".png"
@@ -19,7 +27,7 @@
     {
       "file": "agi_generality 2.png",
       "slug": "agi-generality-2",
-      "title": "Agi Generality 2",
+      "title": "Artificial General Generality",
       "description": "",
       "created": "2019-03-16T21:58:40",
       "ext": ".png"
@@ -27,7 +35,7 @@
     {
       "file": "agi_irrelevance 2.png",
       "slug": "agi-irrelevance-2",
-      "title": "Agi Irrelevance 2",
+      "title": "Artificial General Irrelevance",
       "description": "",
       "created": "2019-03-16T21:59:34",
       "ext": ".png"
@@ -35,7 +43,7 @@
     {
       "file": "agi_humility 2.png",
       "slug": "agi-humility-2",
-      "title": "Agi Humility 2",
+      "title": "Artificial General Humility",
       "description": "",
       "created": "2019-03-16T22:00:12",
       "ext": ".png"
@@ -43,7 +51,7 @@
     {
       "file": "ag_alignment 2.png",
       "slug": "ag-alignment-2",
-      "title": "Ag Alignment 2",
+      "title": "Artificial General Misalignment",
       "description": "",
       "created": "2019-04-28T10:56:25",
       "ext": ".png"
@@ -51,7 +59,7 @@
     {
       "file": "agi_definition 2.png",
       "slug": "agi-definition-2",
-      "title": "Agi Definition 2",
+      "title": "Artificial General Definition",
       "description": "",
       "created": "2019-06-07T22:19:26",
       "ext": ".png"
@@ -59,7 +67,7 @@
     {
       "file": "ag_accomplishment 2.png",
       "slug": "ag-accomplishment-2",
-      "title": "Ag Accomplishment 2",
+      "title": "Artificial General Accomplishment",
       "description": "",
       "created": "2019-08-30T17:18:03",
       "ext": ".png"
@@ -67,7 +75,7 @@
     {
       "file": "ag_reality 2.png",
       "slug": "ag-reality-2",
-      "title": "Ag Reality 2",
+      "title": "Artificial General Reality",
       "description": "",
       "created": "2019-09-07T15:23:29",
       "ext": ".png"
@@ -75,7 +83,7 @@
     {
       "file": "ag_inspiration 2.png",
       "slug": "ag-inspiration-2",
-      "title": "Ag Inspiration 2",
+      "title": "Artificial General Inspiration",
       "description": "",
       "created": "2019-09-27T17:35:00",
       "ext": ".png"
@@ -83,7 +91,7 @@
     {
       "file": "ag_preface 2.png",
       "slug": "ag-preface-2",
-      "title": "Ag Preface 2",
+      "title": "Artificial General Preface",
       "description": "",
       "created": "2019-10-22T22:30:24",
       "ext": ".png"
@@ -91,7 +99,7 @@
     {
       "file": "ag_future 2.png",
       "slug": "ag-future-2",
-      "title": "Ag Future 2",
+      "title": "Artificial General Future",
       "description": "",
       "created": "2019-11-07T22:49:27",
       "ext": ".png"
@@ -99,7 +107,7 @@
     {
       "file": "ag_dilemma2 2.png",
       "slug": "ag-dilemma2-2",
-      "title": "Ag Dilemma2 2",
+      "title": "Artificial General Dilemma",
       "description": "",
       "created": "2019-11-15T23:01:57",
       "ext": ".png"
@@ -107,7 +115,7 @@
     {
       "file": "ag_debate 2.png",
       "slug": "ag-debate-2",
-      "title": "Ag Debate 2",
+      "title": "Artificial General Debate",
       "description": "",
       "created": "2019-11-16T15:38:04",
       "ext": ".png"
@@ -115,23 +123,15 @@
     {
       "file": "ag_wish 2.png",
       "slug": "ag-wish-2",
-      "title": "Ag Wish 2",
+      "title": "Artificial General Wish",
       "description": "",
       "created": "2019-12-31T16:16:27",
       "ext": ".png"
     },
     {
-      "file": "ag_viewpoints 2.png",
-      "slug": "ag-viewpoints-2",
-      "title": "Ag Viewpoints 2",
-      "description": "",
-      "created": "2020-03-03T23:41:37",
-      "ext": ".png"
-    },
-    {
       "file": "ag joke 2.png",
       "slug": "ag-joke-2",
-      "title": "Ag Joke 2",
+      "title": "Artificial General Joke",
       "description": "",
       "created": "2020-07-25T20:08:20",
       "ext": ".png"
@@ -139,7 +139,7 @@
     {
       "file": "ag_emergence 2.png",
       "slug": "ag-emergence-2",
-      "title": "Ag Emergence 2",
+      "title": "Artificial General Emergence",
       "description": "",
       "created": "2020-09-01T04:28:02",
       "ext": ".png"
@@ -147,7 +147,7 @@
     {
       "file": "ag_dichotomy 2.png",
       "slug": "ag-dichotomy-2",
-      "title": "Ag Dichotomy 2",
+      "title": "Artificial General Dichotomy",
       "description": "",
       "created": "2022-05-24T02:04:31",
       "ext": ".png"
@@ -155,7 +155,7 @@
     {
       "file": "ag_sota 2.png",
       "slug": "ag-sota-2",
-      "title": "Ag Sota 2",
+      "title": "Artificial General Sota",
       "description": "",
       "created": "2022-10-23T14:49:21",
       "ext": ".png"
@@ -163,7 +163,7 @@
     {
       "file": "ag_count 2.png",
       "slug": "ag-count-2",
-      "title": "Ag Count 2",
+      "title": "Artificial General Count",
       "description": "",
       "created": "2022-12-06T01:22:30",
       "ext": ".png"
@@ -171,7 +171,7 @@
     {
       "file": "ag_risk 2.png",
       "slug": "ag-risk-2",
-      "title": "Ag Risk 2",
+      "title": "Artificial General Risk",
       "description": "",
       "created": "2022-12-08T16:00:19",
       "ext": ".png"
@@ -179,7 +179,7 @@
     {
       "file": "ag_estimate 2.png",
       "slug": "ag-estimate-2",
-      "title": "Ag Estimate 2",
+      "title": "Artificial General Estimate",
       "description": "",
       "created": "2022-12-10T17:11:45",
       "ext": ".png"
@@ -187,7 +187,7 @@
     {
       "file": "ag_goalpost 2.png",
       "slug": "ag-goalpost-2",
-      "title": "Ag Goalpost 2",
+      "title": "Artificial General Goalpost",
       "description": "",
       "created": "2022-12-17T16:53:08",
       "ext": ".png"
@@ -195,7 +195,7 @@
     {
       "file": "ag_congratulatory 2.png",
       "slug": "ag-congratulatory-2",
-      "title": "Ag Congratulatory 2",
+      "title": "Artificial General Congratulatory",
       "description": "",
       "created": "2023-02-25T14:00:38",
       "ext": ".png"
@@ -203,7 +203,7 @@
     {
       "file": "ag_confidence 2.png",
       "slug": "ag-confidence-2",
-      "title": "Ag Confidence 2",
+      "title": "Artificial General Confidence",
       "description": "",
       "created": "2023-03-26T17:28:37",
       "ext": ".png"
@@ -211,7 +211,7 @@
     {
       "file": "ag_open 2.png",
       "slug": "ag-open-2",
-      "title": "Ag Open 2",
+      "title": "Artificial General Open",
       "description": "",
       "created": "2023-03-26T17:29:03",
       "ext": ".png"
@@ -219,7 +219,7 @@
     {
       "file": "ag_consciousness 2.png",
       "slug": "ag-consciousness-2",
-      "title": "Ag Consciousness 2",
+      "title": "Artificial General Consciousness",
       "description": "",
       "created": "2023-08-04T23:18:42",
       "ext": ".png"
@@ -227,7 +227,7 @@
     {
       "file": "ag_ethics 2.png",
       "slug": "ag-ethics-2",
-      "title": "Ag Ethics 2",
+      "title": "Artificial General Ethics",
       "description": "",
       "created": "2023-09-09T14:55:25",
       "ext": ".png"
@@ -235,7 +235,7 @@
     {
       "file": "ag_strategy 2.png",
       "slug": "ag-strategy-2",
-      "title": "Ag Strategy 2",
+      "title": "Artificial General Strategy",
       "description": "",
       "created": "2023-09-09T15:57:23",
       "ext": ".png"
@@ -243,7 +243,7 @@
     {
       "file": "ag_specialization 2.png",
       "slug": "ag-specialization-2",
-      "title": "Ag Specialization 2",
+      "title": "Artificial General Specialization",
       "description": "",
       "created": "2023-11-26T14:55:58",
       "ext": ".png"
@@ -251,7 +251,7 @@
     {
       "file": "ag_misalignment 2.png",
       "slug": "ag-misalignment-2",
-      "title": "Ag Misalignment 2",
+      "title": "Artificial General Misalignment",
       "description": "",
       "created": "2024-09-05T08:16:35",
       "ext": ".png"
@@ -259,7 +259,7 @@
     {
       "file": "ag_philosophy3 2.png",
       "slug": "ag-philosophy3-2",
-      "title": "Ag Philosophy3 2",
+      "title": "Artificial General Philosophy3",
       "description": "",
       "created": "2024-09-05T08:29:14",
       "ext": ".png"
@@ -267,7 +267,7 @@
     {
       "file": "ag_synergy 2.jpeg",
       "slug": "ag-synergy-2",
-      "title": "Ag Synergy 2",
+      "title": "Artificial General Synergy",
       "description": "",
       "created": "2024-09-05T18:36:37",
       "ext": ".jpeg"
