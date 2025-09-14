@@ -187,17 +187,17 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
     # Optional Twitter handle
     twitter_site_tag = ""
     if cfg.get("twitter_handle"):
-        twitter_site_tag = f"<meta name=\\\"twitter:site\\\" content=\\\"{cfg.get('twitter_handle')}\\\">"
+        twitter_site_tag = f'<meta name="twitter:site" content="{cfg.get("twitter_handle")}">'
 
     # OG image extra tags
     og_extras = []
     if og_width:
-        og_extras.append(f"<meta property=\\\"og:image:width\\\" content=\\\"{int(og_width)}\\\">")
+        og_extras.append(f'<meta property="og:image:width" content="{int(og_width)}">')
     if og_height:
-        og_extras.append(f"<meta property=\\\"og:image:height\\\" content=\\\"{int(og_height)}\\\">")
+        og_extras.append(f'<meta property="og:image:height" content="{int(og_height)}">')
     if og_mime:
-        og_extras.append(f"<meta property=\\\"og:image:type\\\" content=\\\"{og_mime}\\\">")
-    og_extras_block = "\\n  ".join(og_extras)
+        og_extras.append(f'<meta property="og:image:type" content="{og_mime}">')
+    og_extras_block = "\n  ".join(og_extras)
 
     size_attrs = ""
     if width and height:
