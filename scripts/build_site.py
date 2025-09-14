@@ -141,7 +141,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     return html
 
 
-def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url, page_url, canonical_url, og_image_url, width=None, height=None, path_prefix="/"):
+def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url, page_url, canonical_url, og_image_url, width=None, height=None, path_prefix="/", og_width=None, og_height=None, og_mime=None):
     site_name = cfg["site_name"]
     title = f"{site_name} — #{index}: {comic['title']}"
     desc = comic.get("description") or cfg.get("description") or comic['title']
@@ -190,8 +190,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
 
     html = f"""<!doctype html>
 <html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>{title}</title>
-  <meta name=\"description\" content=\"{desc}\">\n  <link rel=\"canonical\" href=\"{canonical}\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:title\" content=\"{title}\">\n  <meta property=\"og:description\" content=\"{desc}\">\n  <meta property=\"og:image\" content=\"{og_image}\">\n  <meta property=\"og:url\" content=\"{canonical}\">\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:title\" content=\"{title}\">\n  <meta name=\"twitter:description\" content=\"{desc}\">\n  <meta name=\"twitter:image\" content=\"{og_image}\">\n  <style>{css}</style>
-</head>
+  <meta name=\"description\" content=\"{desc}\">\n  <link rel=\"canonical\" href=\"{canonical}\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:title\" content=\"{title}\">\n  <meta property=\"og:description\" content=\"{desc}\">\n  <meta property=\"og:image\" content=\"{og_image}\">\n  <meta property=\"og:url\" content=\"{canonical}\">\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:title\" content=\"{title}\">\n  <meta name=\"twitter:description\" content=\"{desc}\">\n  <meta name=\"twitter:image\" content=\"{og_image}\">\n</head>
 <body>
   <header>
     <div class=\"title\">{site_name}</div>
@@ -326,6 +325,19 @@ def main():
         numeric_page_rel = f"{path_prefix}{i}/"
         slug_page_rel = f"{path_prefix}c/{c['slug']}/"
 
+        # Determine OG image dimensions and mime type from original image
+        og_width = og_height = None
+        og_mime = None
+        try:
+            ext = (c.get('ext') or '').lower()
+            og_mime = 'image/jpeg' if ext in ('.jpg', '.jpeg') else 'image/png' if ext == '.png' else 'image/webp' if ext == '.webp' else None
+            orig_path = os.path.join(images_out, f"{c['slug']}{c['ext']}")
+            from PIL import Image  # type: ignore
+            with Image.open(orig_path) as im:
+                og_width, og_height = im.size
+        except Exception:
+            pass
+
         # Numeric page that canonicals to slug
         html_numeric = render_page_html2(
             cfg, c, i, total, prev_slug, next_slug,
@@ -335,6 +347,9 @@ def main():
             og_image_url=original_image_rel,
             width=width,
             height=height,
+            og_width=og_width,
+            og_height=og_height,
+            og_mime=og_mime,
             path_prefix=path_prefix,
         )
         html_numeric = swap_brand_icons(html_numeric, available_icons, path_prefix)
@@ -352,6 +367,9 @@ def main():
             og_image_url=original_image_rel,
             width=width,
             height=height,
+            og_width=og_width,
+            og_height=og_height,
+            og_mime=og_mime,
             path_prefix=path_prefix,
         )
         html_slug = swap_brand_icons(html_slug, available_icons, path_prefix)
