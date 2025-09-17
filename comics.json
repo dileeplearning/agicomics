@@ -196,7 +196,7 @@
       "description": "",
       "created": "2022-12-08T16:00:19",
       "ext": ".png",
-      "visible": true
+      "visible": false
     },
     {
       "file": "ag_estimate 2.png",
