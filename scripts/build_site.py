@@ -256,7 +256,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
         <a href=\"{bsky_url}\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on Bluesky\" title=\"Share on Bluesky\"><svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M6 7c1.5 1.8 3.8 3 6 6 2.2-3 4.5-4.2 6-6-1 3-2.5 5-6 8-3.5-3-5-5-6-8z\"/></svg></a>
         <a href=\"{reddit_url}\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on Reddit\" title=\"Share on Reddit\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"12\" cy=\"13\" r=\"7\"/><circle cx=\"9\" cy=\"12\" r=\"1\" fill=\"currentColor\"/><circle cx=\"15\" cy=\"12\" r=\"1\" fill=\"currentColor\"/><path d=\"M9 15c1.5 1 4.5 1 6 0\"/></svg></a>
       </div>
-      <div class=\"copyright\">© <a href=\"https://www.dileeplearning.com\" target=\"_blank\" rel=\"noopener noreferrer\">Dileep George</a></div>
+      <div class=\"copyright\">© <a href=\"https://www.dileeplearning.com\" target=\"_blank\" rel=\"noopener noreferrer\">Dileep George</a> • <a href=\"https://blog.dileeplearning.com\" target=\"_blank\" rel=\"noopener noreferrer\">AGI blog</a></div>
     </div>
   </main>
   
