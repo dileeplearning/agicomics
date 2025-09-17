@@ -25,6 +25,10 @@ def load_site_config(root):
         "description": "A comic series.",
         "twitter_handle": "",  # e.g. @yourhandle
         "explanation_label": os.environ.get("EXPLANATION_LABEL", "Explanation"),
+        # Optional: choose a specific comic to show on the homepage
+        # by its slug (e.g., "ag-productivity"). If not set, homepage
+        # will mirror the latest comic.
+        "homepage_slug": None,
     }
     cfg_path = os.path.join(root, "site_config.json")
     if os.path.exists(cfg_path):
@@ -350,6 +354,8 @@ def main():
     # Generate per-index pages and slug permalinks
     latest_index = total
     latest_html = None
+    homepage_slug = (cfg.get('homepage_slug') or '').strip() if isinstance(cfg.get('homepage_slug'), str) else None
+    homepage_html = None
     path_prefix = cfg.get('base_path', '/')
     for i, c in enumerate(comics, start=1):
         prev_index = total if i == 1 else i - 1
@@ -428,11 +434,14 @@ def main():
 
         if i == latest_index:
             latest_html = html_slug
+        if homepage_slug and c.get('slug') == homepage_slug:
+            homepage_html = html_slug
 
-    # The homepage mirrors the latest comic
-    if latest_html:
+    # The homepage mirrors a chosen slug if provided, otherwise the latest comic
+    chosen_home = homepage_html or latest_html
+    if chosen_home:
         with open(os.path.join(out_dir, "index.html"), "w", encoding="utf-8") as f:
-            f.write(latest_html)
+            f.write(chosen_home)
 
     # robots.txt and a lightweight 404
     with open(os.path.join(out_dir, "robots.txt"), "w", encoding="utf-8") as f:
