@@ -260,7 +260,33 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
     </div>
   </main>
   
-  <script>(function(){{function f(){{var h=window.innerHeight;var header=document.querySelector('header');var footer=document.querySelector('footer');var nav=document.querySelector('.nav');var share=document.querySelector('.share');var desc=document.querySelector('.desc');var r=0;[header,footer,nav,share,desc].forEach(function(el){{if(el)r+=el.offsetHeight;}});r+=40;var m=Math.max(120,h-r);document.documentElement.style.setProperty('--img-max-h',m+'px');}}window.addEventListener('load',f);window.addEventListener('resize',f);}})();</script>
+  <script>(function(){{
+    function adjustMaxImageHeight(){{
+      var h = window.innerHeight;
+      var header = document.querySelector('header');
+      var footer = document.querySelector('footer');
+      var nav = document.querySelector('.nav');
+      var share = document.querySelector('.share');
+      var desc = document.querySelector('.desc');
+      var r = 0; [header,footer,nav,share,desc].forEach(function(el){{ if(el) r += el.offsetHeight; }});
+      r += 40; // breathing room
+      var m = Math.max(120, h - r);
+      document.documentElement.style.setProperty('--img-max-h', m + 'px');
+    }}
+    window.addEventListener('load', adjustMaxImageHeight);
+    window.addEventListener('resize', adjustMaxImageHeight);
+
+    // Keyboard navigation: Left/Right arrows (and h/l) go prev/next
+    function go(href){{ if(href) window.location.href = href; }}
+    document.addEventListener('keydown', function(e){{
+      if (e.defaultPrevented) return;
+      if (e.altKey || e.ctrlKey || e.metaKey) return;
+      var prev = document.querySelector('a.nav-btn.prev') || document.querySelector('a[rel="prev"]');
+      var next = document.querySelector('a.nav-btn.next') || document.querySelector('a[rel="next"]');
+      if (e.key === 'ArrowLeft' || e.key === 'h') {{ if (prev) {{ e.preventDefault(); go(prev.getAttribute('href')); }} }}
+      else if (e.key === 'ArrowRight' || e.key === 'l') {{ if (next) {{ e.preventDefault(); go(next.getAttribute('href')); }} }}
+    }});
+  }})();</script>
 </body>
 </html>"""
     return html
