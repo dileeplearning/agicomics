@@ -64,7 +64,9 @@ def main():
 
     existing = load_existing(out_path)
     existing_by_file = {c.get("file"): c for c in existing.get("comics", [])}
-    used_slugs = {c.get("slug") for c in existing.get("comics", []) if c.get("slug")}
+    # Track slugs we assign during this run to avoid duplicates while
+    # preserving existing slugs for their own files.
+    used_slugs = set()
 
     comics = []
     for (name, full) in files:
@@ -74,17 +76,20 @@ def main():
 
         prev = existing_by_file.get(name)
         if prev:
+            # Preserve existing slug if present
             slug = prev.get("slug") or slugify(name)
-            # ensure uniqueness
             base_slug = slug
             i = 2
             while slug in used_slugs:
                 slug = f"{base_slug}-{i}"
                 i += 1
             used_slugs.add(slug)
+
             title = prev.get("title") or title_from_slug(slug)
             desc = prev.get("description") or ""
             visible = prev.get("visible") if isinstance(prev.get("visible"), bool) else True
+            # Preserve existing created date if available, otherwise use file mtime
+            created_out = prev.get("created") or created
         else:
             slug = slugify(name)
             base_slug = slug
@@ -93,16 +98,18 @@ def main():
                 slug = f"{base_slug}-{i}"
                 i += 1
             used_slugs.add(slug)
+
             title = title_from_slug(slug)
             desc = ""
             visible = True
+            created_out = created
 
         comics.append({
             "file": name,
             "slug": slug,
             "title": title,
             "description": desc,
-            "created": created,
+            "created": created_out,
             "ext": ext,
             "visible": visible,
         })

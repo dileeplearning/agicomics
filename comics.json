@@ -1,276 +1,328 @@
 {
   "comics": [
     {
-      "file": "ag_viewpoints 2.png",
-      "slug": "ag-viewpoints-2",
-      "title": "Artificial General Viewpoints",
-      "description": "It's that elephant thing",
-      "created": "2020-03-03T23:41:37",
-      "ext": ".png"
-    },
-    {
       "file": "ag_generality 2.png",
-      "slug": "ag-generality-2",
+      "slug": "ag-generality-2-2",
       "title": "Artificial General Generality",
       "description": "",
       "created": "2019-03-11T10:40:37",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "agi_equivalence 2.png",
-      "slug": "agi-equivalence-2",
+      "slug": "agi-equivalence-2-2",
       "title": "Artificial General Equivalence",
       "description": "",
       "created": "2019-03-16T21:58:03",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "agi_generality 2.png",
-      "slug": "agi-generality-2",
+      "slug": "agi-generality-2-2",
       "title": "Artificial General Generality",
       "description": "",
       "created": "2019-03-16T21:58:40",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "agi_irrelevance 2.png",
-      "slug": "agi-irrelevance-2",
+      "slug": "agi-irrelevance-2-2",
       "title": "Artificial General Irrelevance",
       "description": "",
       "created": "2019-03-16T21:59:34",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "agi_humility 2.png",
-      "slug": "agi-humility-2",
+      "slug": "agi-humility-2-2",
       "title": "Artificial General Humility",
       "description": "",
       "created": "2019-03-16T22:00:12",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_alignment 2.png",
-      "slug": "ag-alignment-2",
+      "slug": "ag-alignment-2-2",
       "title": "Artificial General Misalignment",
       "description": "",
       "created": "2019-04-28T10:56:25",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "agi_definition 2.png",
-      "slug": "agi-definition-2",
+      "slug": "agi-definition-2-2",
       "title": "Artificial General Definition",
       "description": "",
       "created": "2019-06-07T22:19:26",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_accomplishment 2.png",
-      "slug": "ag-accomplishment-2",
+      "slug": "ag-accomplishment-2-2",
       "title": "Artificial General Accomplishment",
       "description": "",
       "created": "2019-08-30T17:18:03",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_reality 2.png",
-      "slug": "ag-reality-2",
+      "slug": "ag-reality-2-2",
       "title": "Artificial General Reality",
       "description": "",
       "created": "2019-09-07T15:23:29",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_inspiration 2.png",
-      "slug": "ag-inspiration-2",
+      "slug": "ag-inspiration-2-2",
       "title": "Artificial General Inspiration",
       "description": "",
       "created": "2019-09-27T17:35:00",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_preface 2.png",
-      "slug": "ag-preface-2",
+      "slug": "ag-preface-2-2",
       "title": "Artificial General Preface",
       "description": "",
       "created": "2019-10-22T22:30:24",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_future 2.png",
-      "slug": "ag-future-2",
+      "slug": "ag-future-2-2",
       "title": "Artificial General Future",
       "description": "",
       "created": "2019-11-07T22:49:27",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_dilemma2 2.png",
-      "slug": "ag-dilemma2-2",
+      "slug": "ag-dilemma2-2-2",
       "title": "Artificial General Dilemma",
       "description": "",
       "created": "2019-11-15T23:01:57",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_debate 2.png",
-      "slug": "ag-debate-2",
+      "slug": "ag-debate-2-2",
       "title": "Artificial General Debate",
       "description": "",
       "created": "2019-11-16T15:38:04",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_wish 2.png",
-      "slug": "ag-wish-2",
+      "slug": "ag-wish-2-2",
       "title": "Artificial General Wish",
       "description": "",
       "created": "2019-12-31T16:16:27",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
+    },
+    {
+      "file": "ag_viewpoints 2.png",
+      "slug": "ag-viewpoints-2-2",
+      "title": "Artificial General Viewpoints",
+      "description": "It's that elephant thing",
+      "created": "2020-03-03T23:41:37",
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag joke 2.png",
-      "slug": "ag-joke-2",
+      "slug": "ag-joke-2-2",
       "title": "Artificial General Joke",
       "description": "",
       "created": "2020-07-25T20:08:20",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_emergence 2.png",
-      "slug": "ag-emergence-2",
+      "slug": "ag-emergence-2-2",
       "title": "Artificial General Emergence",
       "description": "",
       "created": "2020-09-01T04:28:02",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_dichotomy 2.png",
-      "slug": "ag-dichotomy-2",
+      "slug": "ag-dichotomy-2-2",
       "title": "Artificial General Dichotomy",
       "description": "The only sensible explanation of system 1 and system 2",
       "created": "2022-05-24T02:04:31",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_sota 2.png",
-      "slug": "ag-sota-2",
+      "slug": "ag-sota-2-2",
       "title": "Artificial General Sota",
       "description": "SOTA: state of the art",
       "created": "2022-10-23T14:49:21",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_count 2.png",
-      "slug": "ag-count-2",
+      "slug": "ag-count-2-2",
       "title": "Artificial General Count",
       "description": "",
       "created": "2022-12-06T01:22:30",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_risk 2.png",
-      "slug": "ag-risk-2",
+      "slug": "ag-risk-2-2",
       "title": "Artificial General Risk",
       "description": "",
       "created": "2022-12-08T16:00:19",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_estimate 2.png",
-      "slug": "ag-estimate-2",
+      "slug": "ag-estimate-2-2",
       "title": "Artificial General Estimate",
       "description": "",
       "created": "2022-12-10T17:11:45",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_goalpost 2.png",
-      "slug": "ag-goalpost-2",
+      "slug": "ag-goalpost-2-2",
       "title": "Artificial General Goalpost",
       "description": "",
       "created": "2022-12-17T16:53:08",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_congratulatory 2.png",
-      "slug": "ag-congratulatory-2",
+      "slug": "ag-congratulatory-2-2",
       "title": "Artificial General Technique",
       "description": "",
       "created": "2023-02-25T14:00:38",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_confidence 2.png",
-      "slug": "ag-confidence-2",
+      "slug": "ag-confidence-2-2",
       "title": "Artificial General Confidence",
       "description": "",
       "created": "2023-03-26T17:28:37",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_open 2.png",
-      "slug": "ag-open-2",
+      "slug": "ag-open-2-2",
       "title": "Artificial General Openness",
       "description": "",
       "created": "2023-03-26T17:29:03",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_consciousness 2.png",
-      "slug": "ag-consciousness-2",
+      "slug": "ag-consciousness-2-2",
       "title": "Artificial General Consciousness",
       "description": "Probably Approximately Correct (PAC) learning refers to one of the theoretical results in machine learning",
       "created": "2023-08-04T23:18:42",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_ethics 2.png",
-      "slug": "ag-ethics-2",
+      "slug": "ag-ethics-2-2",
       "title": "Artificial General Ethics",
       "description": "",
       "created": "2023-09-09T14:55:25",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_strategy 2.png",
-      "slug": "ag-strategy-2",
+      "slug": "ag-strategy-2-2",
       "title": "Artificial General Strategy",
       "description": "",
       "created": "2023-09-09T15:57:23",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_specialization 2.png",
-      "slug": "ag-specialization-2",
+      "slug": "ag-specialization-2-2",
       "title": "Artificial General Specialization",
       "description": "",
       "created": "2023-11-26T14:55:58",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_misalignment 2.png",
-      "slug": "ag-misalignment-2",
+      "slug": "ag-misalignment-2-2",
       "title": "Artificial General Misalignment",
       "description": "",
       "created": "2024-09-05T08:16:35",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_philosophy3 2.png",
-      "slug": "ag-philosophy3-2",
+      "slug": "ag-philosophy3-2-2",
       "title": "Artificial General Philosophy",
       "description": "",
       "created": "2024-09-05T08:29:14",
-      "ext": ".png"
+      "ext": ".png",
+      "visible": true
     },
     {
       "file": "ag_synergy 2.jpeg",
-      "slug": "ag-synergy-2",
+      "slug": "ag-synergy-2-2",
       "title": "Artificial General Synergy",
       "description": "",
       "created": "2024-09-05T18:36:37",
-      "ext": ".jpeg"
+      "ext": ".jpeg",
+      "visible": true
+    },
+    {
+      "file": "ag_productivity.png",
+      "slug": "ag-productivity",
+      "title": "Ag Productivity",
+      "description": "",
+      "created": "2025-09-16T22:11:34",
+      "ext": ".png",
+      "visible": true
+    },
+    {
+      "file": "ag_love.jpeg",
+      "slug": "ag-love",
+      "title": "Ag Love",
+      "description": "",
+      "created": "2025-09-17T00:42:57",
+      "ext": ".jpeg",
+      "visible": true
     }
   ]
 }
