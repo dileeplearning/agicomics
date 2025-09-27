@@ -41,6 +41,10 @@ Notes
 - Social previews use the direct comic image via `og:image`/`twitter:image`.
 - If Pillow is available, WebP versions are generated for faster loads and used on pages; OG still points to the original PNG/JPEG for compatibility.
 
+Notes (Likes)
+
+- The like button feature has been removed; pages do not render likes or call any like APIs.
+
 GitHub Pages (dileeplearning.github.io/agicomics)
 
 - Configure base path and absolute URL when building so links work under the project path:

@@ -73,6 +73,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
 
     # Direct image link
     direct_image_link = image_url
+    
 
     # Minimal CSS inline to keep deployment simple
     css = """
@@ -177,6 +178,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
     reddit_url = f"https://www.reddit.com/submit?url={quote_plus(share_url)}&title={quote_plus(share_text)}"
 
     direct_image_link = image_url
+    
 
     css = """
     :root{--fg:#e6e6e6;--bg:#0b0b0f;--muted:#9aa0a6;--link:#7aa2ff;--link-hover:#a7c0ff;--img-max-h:75vh}
@@ -286,6 +288,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
       if (e.key === 'ArrowLeft' || e.key === 'h') {{ if (prev) {{ e.preventDefault(); go(prev.getAttribute('href')); }} }}
       else if (e.key === 'ArrowRight' || e.key === 'l') {{ if (next) {{ e.preventDefault(); go(next.getAttribute('href')); }} }}
     }});
+    
   }})();</script>
 </body>
 </html>"""
