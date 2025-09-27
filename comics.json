@@ -64,15 +64,6 @@
       "visible": true
     },
     {
-      "file": "ag_accomplishment 2.png",
-      "slug": "ag-accomplishment-2-2",
-      "title": "Artificial General Accomplishment",
-      "description": "",
-      "created": "2019-08-30T17:18:03",
-      "ext": ".png",
-      "visible": true
-    },
-    {
       "file": "ag_reality 2.png",
       "slug": "ag-reality-2-2",
       "title": "Artificial General Reality",
@@ -271,15 +262,6 @@
       "visible": true
     },
     {
-      "file": "ag_specialization 2.png",
-      "slug": "ag-specialization-2-2",
-      "title": "Artificial General Specialization",
-      "description": "",
-      "created": "2023-11-26T14:55:58",
-      "ext": ".png",
-      "visible": true
-    },
-    {
       "file": "ag_misalignment 2.png",
       "slug": "ag-misalignment-2-2",
       "title": "Artificial General Misalignment",
@@ -322,6 +304,51 @@
       "description": "",
       "created": "2025-09-17T00:42:57",
       "ext": ".jpeg",
+      "visible": true
+    },
+    {
+      "file": "ag_accomplishment.png",
+      "slug": "ag-accomplishment",
+      "title": "Ag Accomplishment",
+      "description": "",
+      "created": "2025-09-17T17:38:16",
+      "ext": ".png",
+      "visible": true
+    },
+    {
+      "file": "ag_specialization.png",
+      "slug": "ag-specialization",
+      "title": "Ag Specialization",
+      "description": "",
+      "created": "2025-09-21T12:36:27",
+      "ext": ".png",
+      "visible": true
+    },
+    {
+      "file": "ag_preface 3.png",
+      "slug": "ag-preface-3",
+      "title": "Ag Preface 3",
+      "description": "",
+      "created": "2025-09-21T12:36:33",
+      "ext": ".png",
+      "visible": true
+    },
+    {
+      "file": "ag_rule.png",
+      "slug": "ag-rule",
+      "title": "Ag Rule",
+      "description": "",
+      "created": "2025-09-21T15:52:12",
+      "ext": ".png",
+      "visible": true
+    },
+    {
+      "file": "ag_upgrade.png",
+      "slug": "ag-upgrade",
+      "title": "Ag Upgrade",
+      "description": "",
+      "created": "2025-09-22T19:50:20",
+      "ext": ".png",
       "visible": true
     }
   ]
