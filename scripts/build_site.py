@@ -113,6 +113,13 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .share svg{width:22px;height:22px;display:block}
     .share img.icon-x{filter: invert(1)}
     .desc{margin-top:8px;max-width:800px;color:#d0d4d9;text-align:center}
+    /* Title + inline likes */
+    .desc{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap}
+    .desc strong{margin-right:0}
+    .likes{display:inline-flex;align-items:center;gap:6px;position:relative}
+    .like-btn .heart{color:#ff6b81}
+    .plus-one{position:absolute;top:-6px;left:50%;transform:translate(-50%,0);color:#ff6b81;font-weight:700;opacity:0;animation:plus1 700ms ease-out forwards;pointer-events:none}
+    @keyframes plus1{0%{opacity:0;transform:translate(-50%,0)}10%{opacity:1}100%{opacity:0;transform:translate(-50%,-18px)}}
     details.expl{margin-top:12px;max-width:800px;text-align:left;background:#111521;border:1px solid #1f2633;border-radius:8px;overflow:hidden}
     details.expl summary{cursor:pointer;list-style:none;padding:10px 12px;font-weight:600;color:#dbe3ff;background:#0f1420}
     details.expl[open] summary{border-bottom:1px solid #1f2633}
@@ -259,12 +266,8 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
   <main>
     <div class=\"comic\">\n      <div class=\"img-wrap\">\n        <a class=\"nav-btn prev\" href=\"{path_prefix}c/{prev_slug}/\" aria-label=\"Previous comic\">&#8592;</a>
         <a class=\"nav-btn next\" href=\"{path_prefix}c/{next_slug}/\" aria-label=\"Next comic\">&#8594;</a>
-        <img src=\"{image_url}\" alt=\"{comic['title']}\" loading=\"eager\"{size_attrs}>\n      </div>\n      <div class=\"desc\"><strong>{comic['title']}</strong></div>\n      {explanation_html}
+        <img src=\"{image_url}\" alt=\"{comic['title']}\" loading=\"eager\"{size_attrs}>\n      </div>\n      <div class=\"desc\"><strong>{comic['title']}</strong> <span class=\"likes\" data-slug=\"{comic['slug']}\"><button class=\"like-btn\" type=\"button\" aria-pressed=\"false\" aria-label=\"Like this comic\"><span class=\"heart\" aria-hidden=\"true\">❤</span></button> <span class=\"like-count\" aria-live=\"polite\">0</span></span></div>\n      {explanation_html}
       <div class=\"meta\"><a href=\"{direct_image_link}\">Direct image link</a> • <a href=\"{canonical_url}\">Permalink</a></div>
-      <div class=\"likes\" data-slug=\"{comic['slug']}\"> 
-        <button class=\"like-btn\" type=\"button\" aria-pressed=\"false\" aria-label=\"Like this comic\"><span class=\"heart\" aria-hidden=\"true\">❤</span></button>
-        <span class=\"like-count\" aria-live=\"polite\">0</span>
-      </div>
       <div class=\"share\">\n+        <span class=\"label\">share on</span>
         <a href=\"{x_url}\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on X\" title=\"Share on X\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 4l16 16M20 4L4 20\"/></svg></a>
         <a href=\"{bsky_url}\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on Bluesky\" title=\"Share on Bluesky\"><svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M6 7c1.5 1.8 3.8 3 6 6 2.2-3 4.5-4.2 6-6-1 3-2.5 5-6 8-3.5-3-5-5-6-8z\"/></svg></a>
@@ -365,6 +368,19 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
         .catch(function(){{ return 0; }});
     }}
     function setupCountApiLikes(){{
+      function showPlusOne(btn){{
+        try {{
+          var bubble = document.createElement('span');
+          bubble.className = 'plus-one';
+          bubble.textContent = '+1';
+          var parent = btn && btn.parentElement;
+          if (!parent) return;
+          var cs = window.getComputedStyle(parent);
+          if (cs && cs.position === 'static') parent.style.position = 'relative';
+          parent.appendChild(bubble);
+          setTimeout(function(){{ if (bubble && bubble.parentNode) bubble.parentNode.removeChild(bubble); }}, 800);
+        }} catch(e) {{}}
+      }}
       var wrap = document.querySelector('.likes');
       if (!wrap) return;
       var NS = 'agicomics';
@@ -400,12 +416,14 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
           inc.then(function(v){{
             if (typeof v === 'number') cnt.textContent = String(v);
             else countapiGet(NS, key).then(function(v2){{ if (typeof v2 === 'number') cnt.textContent = String(v2); }});
+            showPlusOne(btn);
           }});
         }} else {{
           // CountAPI fallback
           countapiHit(NS, key).then(function(v){{
             if (typeof v === 'number') cnt.textContent = String(v);
             else countapiGet(NS, key).then(function(v2){{ if (typeof v2 === 'number') cnt.textContent = String(v2); }});
+            showPlusOne(btn);
           }});
         }}
       }});
