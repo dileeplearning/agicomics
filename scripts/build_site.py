@@ -93,6 +93,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .like-btn{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid #222937;border-radius:999px;background:#151922;color:#dbe3ff;cursor:pointer}
     .like-btn:hover{background:#1a2030}
     .like-count{font-variant-numeric:tabular-nums;color:#cbd5e1}
+    .like-btn .heart{color:#ff6b81}
     .share{display:flex;gap:16px;justify-content:center;align-items:center;margin-top:16px}
     .share .label{color:var(--muted);font-size:14px}
     .share a{color:var(--fg)}
@@ -257,8 +258,8 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
         <a class=\"nav-btn next\" href=\"{path_prefix}c/{next_slug}/\" aria-label=\"Next comic\">&#8594;</a>
         <img src=\"{image_url}\" alt=\"{comic['title']}\" loading=\"eager\"{size_attrs}>\n      </div>\n      <div class=\"desc\"><strong>{comic['title']}</strong></div>\n      {explanation_html}
       <div class=\"meta\"><a href=\"{direct_image_link}\">Direct image link</a> • <a href=\"{canonical_url}\">Permalink</a></div>
-      <div class=\"likes\" data-slug=\"{comic['slug']}\">
-        <button class=\"like-btn\" type=\"button\" aria-pressed=\"false\" aria-label=\"Star this comic\">⭐ Star</button>
+      <div class=\"likes\" data-slug=\"{comic['slug']}\"> 
+        <button class=\"like-btn\" type=\"button\" aria-pressed=\"false\" aria-label=\"Like this comic\"><span class=\"heart\" aria-hidden=\"true\">❤</span></button>
         <span class=\"like-count\" aria-live=\"polite\">0</span>
       </div>
       <div class=\"share\">\n+        <span class=\"label\">share on</span>
