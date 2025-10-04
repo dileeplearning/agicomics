@@ -303,24 +303,38 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
     }});
     // Lightweight global likes using optional Worker API or CountAPI fallback
     function apiGet(slug){{
-      if (LIKE_API_BASE){{
-        var u = LIKE_API_BASE.replace(/\/$/,'') + '/likes?slug=' + encodeURIComponent(slug) + '&t=' + Date.now();
-        return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
-          .then(function(r){{ return r.ok ? r.json() : null; }})
-          .then(function(d){{ return d && typeof d.count === 'number' ? d.count : null; }})
-          .catch(function(){{ return null; }});
-      }}
-      return null;
+      if (!LIKE_API_BASE) return null;
+      var base = LIKE_API_BASE.replace(/\/$/,'');
+      var isGAS = /script\.google\.com\/macros\/s\//.test(base);
+      var u = isGAS
+        ? base + '?action=likes&slug=' + encodeURIComponent(slug) + '&t=' + Date.now()
+        : base + '/likes?slug=' + encodeURIComponent(slug) + '&t=' + Date.now();
+      return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
+        .then(function(r){{ return r.ok ? r.json() : null; }})
+        .then(function(d){{
+          if (!d) return null;
+          if (typeof d.count === 'number') return d.count;
+          if (typeof d.value === 'number') return d.value; // tolerate alt format
+          return null;
+        }})
+        .catch(function(){{ return null; }});
     }}
     function apiHit(slug){{
-      if (LIKE_API_BASE){{
-        var u = LIKE_API_BASE.replace(/\/$/,'') + '/hit?slug=' + encodeURIComponent(slug) + '&t=' + Date.now();
-        return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
-          .then(function(r){{ return r.ok ? r.json() : null; }})
-          .then(function(d){{ return d && typeof d.count === 'number' ? d.count : null; }})
-          .catch(function(){{ return null; }});
-      }}
-      return null;
+      if (!LIKE_API_BASE) return null;
+      var base = LIKE_API_BASE.replace(/\/$/,'');
+      var isGAS = /script\.google\.com\/macros\/s\//.test(base);
+      var u = isGAS
+        ? base + '?action=hit&slug=' + encodeURIComponent(slug) + '&t=' + Date.now()
+        : base + '/hit?slug=' + encodeURIComponent(slug) + '&t=' + Date.now();
+      return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
+        .then(function(r){{ return r.ok ? r.json() : null; }})
+        .then(function(d){{
+          if (!d) return null;
+          if (typeof d.count === 'number') return d.count;
+          if (typeof d.value === 'number') return d.value;
+          return null;
+        }})
+        .catch(function(){{ return null; }});
     }}
     function countapiGet(ns, key){{
       var u = 'https://api.countapi.xyz/get/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key) + '?t=' + Date.now();
