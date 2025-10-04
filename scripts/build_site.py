@@ -301,28 +301,28 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
     // Lightweight global likes using CountAPI
     function countapiGet(ns, key){{
       var u = 'https://api.countapi.xyz/get/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key);
-      return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store'}})
+      return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
         .then(function(r){{ return r.ok ? r.json() : null; }})
         .then(function(d){{ return d && typeof d.value === 'number' ? d.value : null; }})
         .catch(function(){{ return null; }});
     }}
     function countapiUpdate(ns, key, amount){{
       var u = 'https://api.countapi.xyz/update/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key) + '?amount=' + String(amount);
-      return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store'}})
+      return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
         .then(function(r){{ return r.ok ? r.json() : null; }})
         .then(function(d){{ return d && typeof d.value === 'number' ? d.value : null; }})
         .catch(function(){{ return null; }});
     }}
     function countapiHit(ns, key){{
       var u = 'https://api.countapi.xyz/hit/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key);
-      return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store'}})
+      return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
         .then(function(r){{ return r.ok ? r.json() : null; }})
         .then(function(d){{ return d && typeof d.value === 'number' ? d.value : null; }})
         .catch(function(){{ return null; }});
     }}
     function countapiCreate(ns, key){{
       var u = 'https://api.countapi.xyz/create?namespace=' + encodeURIComponent(ns) + '&key=' + encodeURIComponent(key) + '&value=0';
-      return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store'}})
+      return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
         .then(function(r){{ return r.ok ? r.json() : null; }})
         .then(function(d){{ return d && typeof d.value === 'number' ? d.value : 0; }})
         .catch(function(){{ return 0; }});
@@ -333,7 +333,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
       var NS = 'agicomics';
       var slug = wrap.getAttribute('data-slug') || '';
       if (!slug) return;
-      var key = 'like:' + slug;
+      var key = 'like-' + slug;
       var btn = wrap.querySelector('.like-btn');
       var cnt = wrap.querySelector('.like-count');
       btn.setAttribute('aria-pressed', 'false');
