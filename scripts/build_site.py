@@ -300,28 +300,28 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
     }});
     // Lightweight global likes using CountAPI
     function countapiGet(ns, key){{
-      var u = 'https://api.countapi.xyz/get/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key);
+      var u = 'https://api.countapi.xyz/get/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key) + '?t=' + Date.now();
       return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
         .then(function(r){{ return r.ok ? r.json() : null; }})
         .then(function(d){{ return d && typeof d.value === 'number' ? d.value : null; }})
         .catch(function(){{ return null; }});
     }}
     function countapiUpdate(ns, key, amount){{
-      var u = 'https://api.countapi.xyz/update/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key) + '?amount=' + String(amount);
+      var u = 'https://api.countapi.xyz/update/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key) + '?amount=' + String(amount) + '&t=' + Date.now();
       return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
         .then(function(r){{ return r.ok ? r.json() : null; }})
         .then(function(d){{ return d && typeof d.value === 'number' ? d.value : null; }})
         .catch(function(){{ return null; }});
     }}
     function countapiHit(ns, key){{
-      var u = 'https://api.countapi.xyz/hit/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key);
+      var u = 'https://api.countapi.xyz/hit/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key) + '?t=' + Date.now();
       return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
         .then(function(r){{ return r.ok ? r.json() : null; }})
         .then(function(d){{ return d && typeof d.value === 'number' ? d.value : null; }})
         .catch(function(){{ return null; }});
     }}
     function countapiCreate(ns, key){{
-      var u = 'https://api.countapi.xyz/create?namespace=' + encodeURIComponent(ns) + '&key=' + encodeURIComponent(key) + '&value=0';
+      var u = 'https://api.countapi.xyz/create?namespace=' + encodeURIComponent(ns) + '&key=' + encodeURIComponent(key) + '&value=0&t=' + Date.now();
       return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
         .then(function(r){{ return r.ok ? r.json() : null; }})
         .then(function(d){{ return d && typeof d.value === 'number' ? d.value : 0; }})
