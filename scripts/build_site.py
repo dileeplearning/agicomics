@@ -115,8 +115,8 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .desc{margin-top:8px;max-width:800px;color:#d0d4d9;text-align:center}
     /* Title + inline likes */
     .desc{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap}
-    .desc > .likes{margin-left:1.25em}
-    .desc strong{margin-right:0}
+    .desc strong{margin-right:0;padding-right:1.5em}
+    .desc > .likes{margin-left:0}
     .likes{display:inline-flex;align-items:center;gap:6px}
     .like-btn{position:relative}
     .like-btn .heart{color:#ff6b81}
