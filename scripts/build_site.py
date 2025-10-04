@@ -25,6 +25,8 @@ def load_site_config(root):
         "description": "A comic series.",
         "twitter_handle": "",  # e.g. @yourhandle
         "explanation_label": os.environ.get("EXPLANATION_LABEL", "Explanation"),
+        # Optional global likes API base (e.g., https://likes.example.com/api)
+        "likes_api_base": os.environ.get("LIKES_API_BASE", None),
         # Optional: choose a specific comic to show on the homepage
         # by its slug (e.g., "ag-productivity"). If not set, homepage
         # will mirror the latest comic.
@@ -273,6 +275,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
   </main>
   
   <script>(function(){{
+    var LIKE_API_BASE = "{(cfg.get('likes_api_base') or '').strip()}"; // optional Worker API; fallback to CountAPI
     function adjustMaxImageHeight(){{
       var h = window.innerHeight;
       var header = document.querySelector('header');
@@ -298,7 +301,27 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
       if (e.key === 'ArrowLeft' || e.key === 'h') {{ if (prev) {{ e.preventDefault(); go(prev.getAttribute('href')); }} }}
       else if (e.key === 'ArrowRight' || e.key === 'l') {{ if (next) {{ e.preventDefault(); go(next.getAttribute('href')); }} }}
     }});
-    // Lightweight global likes using CountAPI
+    // Lightweight global likes using optional Worker API or CountAPI fallback
+    function apiGet(slug){{
+      if (LIKE_API_BASE){{
+        var u = LIKE_API_BASE.replace(/\/$/,'') + '/likes?slug=' + encodeURIComponent(slug) + '&t=' + Date.now();
+        return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
+          .then(function(r){{ return r.ok ? r.json() : null; }})
+          .then(function(d){{ return d && typeof d.count === 'number' ? d.count : null; }})
+          .catch(function(){{ return null; }});
+      }}
+      return null;
+    }}
+    function apiHit(slug){{
+      if (LIKE_API_BASE){{
+        var u = LIKE_API_BASE.replace(/\/$/,'') + '/hit?slug=' + encodeURIComponent(slug) + '&t=' + Date.now();
+        return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
+          .then(function(r){{ return r.ok ? r.json() : null; }})
+          .then(function(d){{ return d && typeof d.count === 'number' ? d.count : null; }})
+          .catch(function(){{ return null; }});
+      }}
+      return null;
+    }}
     function countapiGet(ns, key){{
       var u = 'https://api.countapi.xyz/get/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key) + '?t=' + Date.now();
       return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'}})
@@ -337,19 +360,40 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
       var btn = wrap.querySelector('.like-btn');
       var cnt = wrap.querySelector('.like-count');
       btn.setAttribute('aria-pressed', 'false');
-      countapiGet(NS, key).then(function(v){{
-        if (v === null) {{
-          return countapiCreate(NS, key).then(function(v2){{ cnt.textContent = String(v2 || 0); }});
-        }} else {{
-          cnt.textContent = String(v);
-        }}
-      }});
-      btn.addEventListener('click', function(){{
-        // Always increment; repeatable
-        countapiHit(NS, key).then(function(v){{
+      // Try Worker API first if configured; otherwise use CountAPI
+      var init = apiGet(slug);
+      if (init && typeof init.then === 'function'){{
+        init.then(function(v){{
           if (typeof v === 'number') cnt.textContent = String(v);
-          else countapiGet(NS, key).then(function(v2){{ if (typeof v2 === 'number') cnt.textContent = String(v2); }});
+          else {{
+            countapiGet(NS, key).then(function(v2){{ if (typeof v2 === 'number') cnt.textContent = String(v2); else {{
+              countapiCreate(NS, key).then(function(v3){{ cnt.textContent = String(v3 || 0); }});
+            }} }});
+          }}
         }});
+      }} else {{
+        countapiGet(NS, key).then(function(v){{
+          if (v === null) {{
+            return countapiCreate(NS, key).then(function(v2){{ cnt.textContent = String(v2 || 0); }});
+          }} else {{
+            cnt.textContent = String(v);
+          }}
+        }});
+      }}
+      btn.addEventListener('click', function(){{
+        var inc = apiHit(slug);
+        if (inc && typeof inc.then === 'function'){{
+          inc.then(function(v){{
+            if (typeof v === 'number') cnt.textContent = String(v);
+            else countapiGet(NS, key).then(function(v2){{ if (typeof v2 === 'number') cnt.textContent = String(v2); }});
+          }});
+        }} else {{
+          // CountAPI fallback
+          countapiHit(NS, key).then(function(v){{
+            if (typeof v === 'number') cnt.textContent = String(v);
+            else countapiGet(NS, key).then(function(v2){{ if (typeof v2 === 'number') cnt.textContent = String(v2); }});
+          }});
+        }}
       }});
     }}
     if (document.readyState === 'loading') {{

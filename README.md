@@ -41,6 +41,26 @@ Notes
 - Social previews use the direct comic image via `og:image`/`twitter:image`.
 - If Pillow is available, WebP versions are generated for faster loads and used on pages; OG still points to the original PNG/JPEG for compatibility.
 
+Global Likes (increment-only)
+
+- Pages include a heart button that increments a global counter.
+- It uses a tiny API if configured via `likes_api_base` in `site_config.json` (fallback: CountAPI if no API is set, but some networks block it).
+
+Cloudflare Worker (recommended)
+
+1) Create a Workers KV namespace (e.g., `LIKES`).
+2) Create a Worker and bind the KV namespace as `LIKES`.
+3) Use `server/cloudflare-worker/worker.js` as the Worker code.
+4) Deploy and note the base URL (e.g., `https://your-worker.subdomain.workers.dev/api`).
+5) Set `likes_api_base` in `site_config.json`, e.g.:
+   `{ "likes_api_base": "https://your-worker.subdomain.workers.dev/api" }`
+6) Rebuild: `python3 scripts/build_site.py`.
+
+API Contract
+
+- `GET /likes?slug=<slug>` → `{ slug, count }`
+- `GET /hit?slug=<slug>` → `{ slug, count }` (increments and returns)
+
 Notes (Likes)
 
 - The like button feature has been removed; pages do not render likes or call any like APIs.
