@@ -93,6 +93,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .like-btn{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid #222937;border-radius:999px;background:#151922;color:#dbe3ff;cursor:pointer}
     .like-btn:hover{background:#1a2030}
     .like-count{font-variant-numeric:tabular-nums;color:#cbd5e1}
+    .like-btn[disabled]{opacity:.6;cursor:default}
     .like-btn .heart{color:#ff6b81}
     .share{display:flex;gap:16px;justify-content:center;align-items:center;margin-top:16px}
     .share .label{color:var(--muted);font-size:14px}
@@ -338,6 +339,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
       var likedKey = 'liked:' + slug;
       var liked = (localStorage.getItem(likedKey) === '1');
       btn.setAttribute('aria-pressed', liked ? 'true' : 'false');
+      if (liked) {{ try {{ btn.setAttribute('disabled','disabled'); }} catch(e){{}} }}
       countapiGet(NS, key).then(function(v){{
         if (v === null) {{
           return countapiCreate(NS, key).then(function(v2){{ cnt.textContent = String(v2 || 0); }});
@@ -346,24 +348,15 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
         }}
       }});
       btn.addEventListener('click', function(){{
-        var nowLiked = (btn.getAttribute('aria-pressed') === 'true');
-        if (nowLiked) {{
-          // Attempt to decrement; if it fails, silently refetch
-          countapiUpdate(NS, key, -1).then(function(v){{
-            if (typeof v === 'number') cnt.textContent = String(v);
-            else countapiGet(NS, key).then(function(v2){{ if (typeof v2 === 'number') cnt.textContent = String(v2); }});
-            localStorage.removeItem(likedKey);
-            btn.setAttribute('aria-pressed', 'false');
-          }});
-        }} else {{
-          // Use hit for simpler +1 with auto-create
-          countapiHit(NS, key).then(function(v){{
-            if (typeof v === 'number') cnt.textContent = String(v);
-            else countapiGet(NS, key).then(function(v2){{ if (typeof v2 === 'number') cnt.textContent = String(v2); }});
-            localStorage.setItem(likedKey, '1');
-            btn.setAttribute('aria-pressed', 'true');
-          }});
-        }}
+        if (btn.getAttribute('disabled')) return;
+        // Always increment; never decrement
+        countapiHit(NS, key).then(function(v){{
+          if (typeof v === 'number') cnt.textContent = String(v);
+          else countapiGet(NS, key).then(function(v2){{ if (typeof v2 === 'number') cnt.textContent = String(v2); }});
+          localStorage.setItem(likedKey, '1');
+          btn.setAttribute('aria-pressed', 'true');
+          try {{ btn.setAttribute('disabled','disabled'); }} catch(e){{}}
+        }});
       }});
     }}
     if (document.readyState === 'loading') {{
