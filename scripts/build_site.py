@@ -312,6 +312,13 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
         .then(function(d){{ return d && typeof d.value === 'number' ? d.value : null; }})
         .catch(function(){{ return null; }});
     }}
+    function countapiHit(ns, key){{
+      var u = 'https://api.countapi.xyz/hit/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key);
+      return fetch(u, {{mode:'cors', credentials:'omit'}})
+        .then(function(r){{ return r.ok ? r.json() : null; }})
+        .then(function(d){{ return d && typeof d.value === 'number' ? d.value : null; }})
+        .catch(function(){{ return null; }});
+    }}
     function countapiCreate(ns, key){{
       var u = 'https://api.countapi.xyz/create?namespace=' + encodeURIComponent(ns) + '&key=' + encodeURIComponent(key) + '&value=0';
       return fetch(u, {{mode:'cors', credentials:'omit'}})
@@ -340,17 +347,23 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
       }});
       btn.addEventListener('click', function(){{
         var nowLiked = (btn.getAttribute('aria-pressed') === 'true');
-        var delta = nowLiked ? -1 : 1;
-        countapiUpdate(NS, key, delta).then(function(v){{
-          if (typeof v === 'number') cnt.textContent = String(v);
-          if (nowLiked) {{
+        if (nowLiked) {{
+          // Attempt to decrement; if it fails, silently refetch
+          countapiUpdate(NS, key, -1).then(function(v){{
+            if (typeof v === 'number') cnt.textContent = String(v);
+            else countapiGet(NS, key).then(function(v2){{ if (typeof v2 === 'number') cnt.textContent = String(v2); }});
             localStorage.removeItem(likedKey);
             btn.setAttribute('aria-pressed', 'false');
-          }} else {{
+          }});
+        }} else {{
+          // Use hit for simpler +1 with auto-create
+          countapiHit(NS, key).then(function(v){{
+            if (typeof v === 'number') cnt.textContent = String(v);
+            else countapiGet(NS, key).then(function(v2){{ if (typeof v2 === 'number') cnt.textContent = String(v2); }});
             localStorage.setItem(likedKey, '1');
             btn.setAttribute('aria-pressed', 'true');
-          }}
-        }});
+          }});
+        }}
       }});
     }}
     if (document.readyState === 'loading') {{
