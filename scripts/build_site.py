@@ -301,28 +301,28 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
     // Lightweight global likes using CountAPI
     function countapiGet(ns, key){{
       var u = 'https://api.countapi.xyz/get/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key);
-      return fetch(u, {{mode:'cors', credentials:'omit'}})
+      return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store'}})
         .then(function(r){{ return r.ok ? r.json() : null; }})
         .then(function(d){{ return d && typeof d.value === 'number' ? d.value : null; }})
         .catch(function(){{ return null; }});
     }}
     function countapiUpdate(ns, key, amount){{
       var u = 'https://api.countapi.xyz/update/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key) + '?amount=' + String(amount);
-      return fetch(u, {{mode:'cors', credentials:'omit'}})
+      return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store'}})
         .then(function(r){{ return r.ok ? r.json() : null; }})
         .then(function(d){{ return d && typeof d.value === 'number' ? d.value : null; }})
         .catch(function(){{ return null; }});
     }}
     function countapiHit(ns, key){{
       var u = 'https://api.countapi.xyz/hit/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key);
-      return fetch(u, {{mode:'cors', credentials:'omit'}})
+      return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store'}})
         .then(function(r){{ return r.ok ? r.json() : null; }})
         .then(function(d){{ return d && typeof d.value === 'number' ? d.value : null; }})
         .catch(function(){{ return null; }});
     }}
     function countapiCreate(ns, key){{
       var u = 'https://api.countapi.xyz/create?namespace=' + encodeURIComponent(ns) + '&key=' + encodeURIComponent(key) + '&value=0';
-      return fetch(u, {{mode:'cors', credentials:'omit'}})
+      return fetch(u, {{mode:'cors', credentials:'omit', cache:'no-store'}})
         .then(function(r){{ return r.ok ? r.json() : null; }})
         .then(function(d){{ return d && typeof d.value === 'number' ? d.value : 0; }})
         .catch(function(){{ return 0; }});
@@ -336,10 +336,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
       var key = 'like:' + slug;
       var btn = wrap.querySelector('.like-btn');
       var cnt = wrap.querySelector('.like-count');
-      var likedKey = 'liked:' + slug;
-      var liked = (localStorage.getItem(likedKey) === '1');
-      btn.setAttribute('aria-pressed', liked ? 'true' : 'false');
-      if (liked) {{ try {{ btn.setAttribute('disabled','disabled'); }} catch(e){{}} }}
+      btn.setAttribute('aria-pressed', 'false');
       countapiGet(NS, key).then(function(v){{
         if (v === null) {{
           return countapiCreate(NS, key).then(function(v2){{ cnt.textContent = String(v2 || 0); }});
@@ -348,14 +345,10 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
         }}
       }});
       btn.addEventListener('click', function(){{
-        if (btn.getAttribute('disabled')) return;
-        // Always increment; never decrement
+        // Always increment; repeatable
         countapiHit(NS, key).then(function(v){{
           if (typeof v === 'number') cnt.textContent = String(v);
           else countapiGet(NS, key).then(function(v2){{ if (typeof v2 === 'number') cnt.textContent = String(v2); }});
-          localStorage.setItem(likedKey, '1');
-          btn.setAttribute('aria-pressed', 'true');
-          try {{ btn.setAttribute('disabled','disabled'); }} catch(e){{}}
         }});
       }});
     }}
