@@ -116,10 +116,11 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     /* Title + inline likes */
     .desc{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap}
     .desc strong{margin-right:0}
-    .likes{display:inline-flex;align-items:center;gap:6px;position:relative}
+    .likes{display:inline-flex;align-items:center;gap:6px}
+    .like-btn{position:relative}
     .like-btn .heart{color:#ff6b81}
-    .plus-one{position:absolute;top:-6px;left:50%;transform:translate(-50%,0);color:#ff6b81;font-weight:700;opacity:0;animation:plus1 700ms ease-out forwards;pointer-events:none}
-    @keyframes plus1{0%{opacity:0;transform:translate(-50%,0)}10%{opacity:1}100%{opacity:0;transform:translate(-50%,-18px)}}
+    .plus-one{position:absolute;top:-6px;left:50%;transform:translate(-50%,0);color:#ff6b81;font-weight:700;opacity:0;animation:plus1 450ms ease-out forwards;pointer-events:none;z-index:2}
+    @keyframes plus1{0%{opacity:0;transform:translate(-50%,0)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-22px)}}
     details.expl{margin-top:12px;max-width:800px;text-align:left;background:#111521;border:1px solid #1f2633;border-radius:8px;overflow:hidden}
     details.expl summary{cursor:pointer;list-style:none;padding:10px 12px;font-weight:600;color:#dbe3ff;background:#0f1420}
     details.expl[open] summary{border-bottom:1px solid #1f2633}
@@ -373,12 +374,9 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
           var bubble = document.createElement('span');
           bubble.className = 'plus-one';
           bubble.textContent = '+1';
-          var parent = btn && btn.parentElement;
-          if (!parent) return;
-          var cs = window.getComputedStyle(parent);
-          if (cs && cs.position === 'static') parent.style.position = 'relative';
-          parent.appendChild(bubble);
-          setTimeout(function(){{ if (bubble && bubble.parentNode) bubble.parentNode.removeChild(bubble); }}, 800);
+          if (!btn) return;
+          btn.appendChild(bubble);
+          setTimeout(function(){{ if (bubble && bubble.parentNode) bubble.parentNode.removeChild(bubble); }}, 600);
         }} catch(e) {{}}
       }}
       var wrap = document.querySelector('.likes');
@@ -411,19 +409,21 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
         }});
       }}
       btn.addEventListener('click', function(){{
+        // Immediate feedback: float +1 and optimistic increment
+        showPlusOne(btn);
+        var cur = parseInt(cnt.textContent, 10) || 0;
+        cnt.textContent = String(cur + 1);
         var inc = apiHit(slug);
         if (inc && typeof inc.then === 'function'){{
           inc.then(function(v){{
             if (typeof v === 'number') cnt.textContent = String(v);
             else countapiGet(NS, key).then(function(v2){{ if (typeof v2 === 'number') cnt.textContent = String(v2); }});
-            showPlusOne(btn);
           }});
         }} else {{
           // CountAPI fallback
           countapiHit(NS, key).then(function(v){{
             if (typeof v === 'number') cnt.textContent = String(v);
             else countapiGet(NS, key).then(function(v2){{ if (typeof v2 === 'number') cnt.textContent = String(v2); }});
-            showPlusOne(btn);
           }});
         }}
       }});
