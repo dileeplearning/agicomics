@@ -89,6 +89,10 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .comic .img-wrap{position:relative;display:inline-block}
     .comic img{max-width:100%;height:auto;max-height:var(--img-max-h);object-fit:contain;border-radius:2px}
     .meta{margin-top:8px;color:var(--muted);text-align:center}
+    .likes{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:14px}
+    .like-btn{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid #222937;border-radius:999px;background:#151922;color:#dbe3ff;cursor:pointer}
+    .like-btn:hover{background:#1a2030}
+    .like-count{font-variant-numeric:tabular-nums;color:#cbd5e1}
     .share{display:flex;gap:16px;justify-content:center;align-items:center;margin-top:16px}
     .share .label{color:var(--muted);font-size:14px}
     .share a{color:var(--fg)}
@@ -253,6 +257,10 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
         <a class=\"nav-btn next\" href=\"{path_prefix}c/{next_slug}/\" aria-label=\"Next comic\">&#8594;</a>
         <img src=\"{image_url}\" alt=\"{comic['title']}\" loading=\"eager\"{size_attrs}>\n      </div>\n      <div class=\"desc\"><strong>{comic['title']}</strong></div>\n      {explanation_html}
       <div class=\"meta\"><a href=\"{direct_image_link}\">Direct image link</a> • <a href=\"{canonical_url}\">Permalink</a></div>
+      <div class=\"likes\" data-slug=\"{comic['slug']}\">
+        <button class=\"like-btn\" type=\"button\" aria-pressed=\"false\" aria-label=\"Star this comic\">⭐ Star</button>
+        <span class=\"like-count\" aria-live=\"polite\">0</span>
+      </div>
       <div class=\"share\">\n+        <span class=\"label\">share on</span>
         <a href=\"{x_url}\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on X\" title=\"Share on X\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 4l16 16M20 4L4 20\"/></svg></a>
         <a href=\"{bsky_url}\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on Bluesky\" title=\"Share on Bluesky\"><svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M6 7c1.5 1.8 3.8 3 6 6 2.2-3 4.5-4.2 6-6-1 3-2.5 5-6 8-3.5-3-5-5-6-8z\"/></svg></a>
@@ -288,7 +296,67 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
       if (e.key === 'ArrowLeft' || e.key === 'h') {{ if (prev) {{ e.preventDefault(); go(prev.getAttribute('href')); }} }}
       else if (e.key === 'ArrowRight' || e.key === 'l') {{ if (next) {{ e.preventDefault(); go(next.getAttribute('href')); }} }}
     }});
-    
+    // Lightweight global likes using CountAPI
+    function countapiGet(ns, key){{
+      var u = 'https://api.countapi.xyz/get/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key);
+      return fetch(u, {{mode:'cors', credentials:'omit'}})
+        .then(function(r){{ return r.ok ? r.json() : null; }})
+        .then(function(d){{ return d && typeof d.value === 'number' ? d.value : null; }})
+        .catch(function(){{ return null; }});
+    }}
+    function countapiUpdate(ns, key, amount){{
+      var u = 'https://api.countapi.xyz/update/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key) + '?amount=' + String(amount);
+      return fetch(u, {{mode:'cors', credentials:'omit'}})
+        .then(function(r){{ return r.ok ? r.json() : null; }})
+        .then(function(d){{ return d && typeof d.value === 'number' ? d.value : null; }})
+        .catch(function(){{ return null; }});
+    }}
+    function countapiCreate(ns, key){{
+      var u = 'https://api.countapi.xyz/create?namespace=' + encodeURIComponent(ns) + '&key=' + encodeURIComponent(key) + '&value=0';
+      return fetch(u, {{mode:'cors', credentials:'omit'}})
+        .then(function(r){{ return r.ok ? r.json() : null; }})
+        .then(function(d){{ return d && typeof d.value === 'number' ? d.value : 0; }})
+        .catch(function(){{ return 0; }});
+    }}
+    function setupCountApiLikes(){{
+      var wrap = document.querySelector('.likes');
+      if (!wrap) return;
+      var NS = 'agicomics';
+      var slug = wrap.getAttribute('data-slug') || '';
+      if (!slug) return;
+      var key = 'like:' + slug;
+      var btn = wrap.querySelector('.like-btn');
+      var cnt = wrap.querySelector('.like-count');
+      var likedKey = 'liked:' + slug;
+      var liked = (localStorage.getItem(likedKey) === '1');
+      btn.setAttribute('aria-pressed', liked ? 'true' : 'false');
+      countapiGet(NS, key).then(function(v){{
+        if (v === null) {{
+          return countapiCreate(NS, key).then(function(v2){{ cnt.textContent = String(v2 || 0); }});
+        }} else {{
+          cnt.textContent = String(v);
+        }}
+      }});
+      btn.addEventListener('click', function(){{
+        var nowLiked = (btn.getAttribute('aria-pressed') === 'true');
+        var delta = nowLiked ? -1 : 1;
+        countapiUpdate(NS, key, delta).then(function(v){{
+          if (typeof v === 'number') cnt.textContent = String(v);
+          if (nowLiked) {{
+            localStorage.removeItem(likedKey);
+            btn.setAttribute('aria-pressed', 'false');
+          }} else {{
+            localStorage.setItem(likedKey, '1');
+            btn.setAttribute('aria-pressed', 'true');
+          }}
+        }});
+      }});
+    }}
+    if (document.readyState === 'loading') {{
+      document.addEventListener('DOMContentLoaded', setupCountApiLikes);
+    }} else {{
+      setupCountApiLikes();
+    }}
   }})();</script>
 </body>
 </html>"""
