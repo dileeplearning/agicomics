@@ -35,6 +35,13 @@ Editing Metadata
 - Open `comics.json` and edit `title` and `description` for each comic.
 - Re-run the build step to update pages.
 
+Ordering
+
+- You can control page order with an optional `order` field per comic in `comics.json`.
+- Semantics: lower numbers appear first. Comics without an `order` value follow after all ordered comics, preserving their original relative order.
+- Ties: if two comics have the same `order`, their original file order is used between them.
+- After editing `order`, run `python3 scripts/build_site.py` (or push to main to trigger the deploy workflow).
+
 Notes
 
 - Index is displayed (e.g., “Comic #12”) without the total count, as requested.

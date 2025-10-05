@@ -472,6 +472,20 @@ def main():
     comics = data.get("comics", [])
     # Filter out comics marked invisible
     comics = [c for c in comics if not (isinstance(c.get('visible'), bool) and c.get('visible') is False)]
+    # Optional ordering: if an integer field 'order' exists, sort ascending by it.
+    # Comics without 'order' keep their original relative order and appear after those with an order.
+    def _sort_key(item_with_index):
+        idx, c = item_with_index
+        v = c.get('order')
+        try:
+            val = int(v)
+        except Exception:
+            val = None
+        # Items with no valid order go after ordered ones (use a large sentinel),
+        # and preserve original order via the original index as tiebreaker.
+        return (val if val is not None else 10_000_000, idx)
+
+    comics = [c for _, c in sorted(list(enumerate(comics)), key=_sort_key)]
     if not comics:
         print("ERROR: No comics in comics.json", file=sys.stderr)
         sys.exit(1)
