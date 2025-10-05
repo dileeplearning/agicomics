@@ -92,7 +92,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .comic img{max-width:100%;height:auto;max-height:var(--img-max-h);object-fit:contain;border-radius:2px}
     .meta{margin-top:8px;color:var(--muted);text-align:center}
     .likes{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:14px}
-    .like-btn{display:inline-flex;align-items:center;justify-content:center;padding:4px;border:0;background:transparent;color:#fbbf24;cursor:pointer}
+    .like-btn{display:inline-flex;align-items:center;justify-content:center;padding:0;border:0;background:transparent;cursor:pointer;-webkit-appearance:none;appearance:none;outline:none}
     .like-btn:hover{opacity:.9}
     .like-count{font-variant-numeric:tabular-nums;color:#cbd5e1}
     .like-btn[disabled]{opacity:.6;cursor:default}
@@ -120,7 +120,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     /* Likes block below title, centered */
     .likes{display:inline-flex;align-items:center;gap:8px;margin:6px auto 0}
     .like-btn{position:relative}
-    .like-btn .icon{display:inline-block;font-size:1.5em;line-height:1;color:#fbbf24}
+    .like-btn .icon{display:block;width:22px;height:22px;color:#fff}
     .plus-one{position:absolute;top:-6px;left:50%;transform:translate(-50%,0);color:#ff6b81;font-weight:700;opacity:0;animation:plus1 450ms ease-out forwards;pointer-events:none;z-index:2}
     @keyframes plus1{0%{opacity:0;transform:translate(-50%,0)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-22px)}}
     details.expl{margin-top:12px;max-width:800px;text-align:left;background:#111521;border:1px solid #1f2633;border-radius:8px;overflow:hidden}
