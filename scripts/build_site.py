@@ -92,8 +92,8 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .comic img{max-width:100%;height:auto;max-height:var(--img-max-h);object-fit:contain;border-radius:2px}
     .meta{margin-top:8px;color:var(--muted);text-align:center}
     .likes{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:14px}
-    .like-btn{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid #222937;border-radius:999px;background:#151922;color:#dbe3ff;cursor:pointer}
-    .like-btn:hover{background:#1a2030}
+    .like-btn{display:inline-flex;align-items:center;justify-content:center;padding:4px;border:0;background:transparent;color:#ff2d55;cursor:pointer}
+    .like-btn:hover{background:transparent;opacity:.9}
     .like-count{font-variant-numeric:tabular-nums;color:#cbd5e1}
     .like-btn[disabled]{opacity:.6;cursor:default}
     .like-btn .heart{color:#ff6b81}
@@ -120,7 +120,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     /* Likes block below title, centered */
     .likes{display:inline-flex;align-items:center;gap:8px;margin:6px auto 0}
     .like-btn{position:relative}
-    .like-btn .heart{color:#ff2d55 !important;font-size:1.25em;line-height:1;display:inline-block}
+    .like-btn .heart{color:#ff2d55 !important;width:22px;height:22px;display:inline-block}
     .plus-one{position:absolute;top:-6px;left:50%;transform:translate(-50%,0);color:#ff6b81;font-weight:700;opacity:0;animation:plus1 450ms ease-out forwards;pointer-events:none;z-index:2}
     @keyframes plus1{0%{opacity:0;transform:translate(-50%,0)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-22px)}}
     details.expl{margin-top:12px;max-width:800px;text-align:left;background:#111521;border:1px solid #1f2633;border-radius:8px;overflow:hidden}
@@ -269,7 +269,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
   <main>
     <div class=\"comic\">\n      <div class=\"img-wrap\">\n        <a class=\"nav-btn prev\" href=\"{path_prefix}c/{prev_slug}/\" aria-label=\"Previous comic\">&#8592;</a>
         <a class=\"nav-btn next\" href=\"{path_prefix}c/{next_slug}/\" aria-label=\"Next comic\">&#8594;</a>
-        <img src=\"{image_url}\" alt=\"{comic['title']}\" loading=\"eager\"{size_attrs}>\n      </div>\n      <div class=\"desc\"><strong>{comic['title']}</strong></div>\n      <div class=\"likes\" data-slug=\"{comic['slug']}\"><button class=\"like-btn\" type=\"button\" aria-pressed=\"false\" aria-label=\"Like this comic\"><span class=\"heart\" aria-hidden=\"true\">❤</span></button> <span class=\"like-count\" aria-live=\"polite\">0</span></div>\n      {explanation_html}
+        <img src=\"{image_url}\" alt=\"{comic['title']}\" loading=\"eager\"{size_attrs}>\n      </div>\n      <div class=\"desc\"><strong>{comic['title']}</strong></div>\n      <div class=\"likes\" data-slug=\"{comic['slug']}\"><button class=\"like-btn\" type=\"button\" aria-pressed=\"false\" aria-label=\"Like this comic\"><svg class=\"heart\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 3.99 4 6.5 4c1.74 0 3.41 1.01 4.22 2.5C11.09 5.01 12.76 4 14.5 4 17.01 4 19 6 19 8.5c0 3.78-3.4 6.86-8.05 11.54L12 21.35z\"/></svg></button> <span class=\"like-count\" aria-live=\"polite\">0</span></div>\n      {explanation_html}
       <div class=\"meta\"><a href=\"{direct_image_link}\">Direct image link</a> • <a href=\"{canonical_url}\">Permalink</a></div>
       <div class=\"share\">\n+        <span class=\"label\">share on</span>
         <a href=\"{x_url}\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on X\" title=\"Share on X\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 4l16 16M20 4L4 20\"/></svg></a>
