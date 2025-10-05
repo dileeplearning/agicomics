@@ -120,7 +120,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     /* Likes block below title, centered */
     .likes{display:inline-flex;align-items:center;gap:8px;margin:6px auto 0}
     .like-btn{position:relative}
-    .like-btn .heart{display:inline-block;font-size:2.2em;line-height:1;color:#ff2d55}
+    .like-btn .heart{display:inline-block;font-size:4.0em;line-height:1;color:#ff2d55}
     .plus-one{position:absolute;top:-6px;left:50%;transform:translate(-50%,0);color:#ff6b81;font-weight:700;opacity:0;animation:plus1 450ms ease-out forwards;pointer-events:none;z-index:2}
     @keyframes plus1{0%{opacity:0;transform:translate(-50%,0)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-22px)}}
     details.expl{margin-top:12px;max-width:800px;text-align:left;background:#111521;border:1px solid #1f2633;border-radius:8px;overflow:hidden}
