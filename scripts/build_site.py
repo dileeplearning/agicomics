@@ -176,7 +176,6 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
 <body>
   <header>
     <div class=\"title\">{site_name}</div>
-    <div class=\"meta\">Comic #{index}</div>
     <div class=\"search\">
       <div class=\"box\">
         <input id=\"q\" type=\"search\" placeholder=\"Search comics...\" autocomplete=\"off\" aria-label=\"Search comics\"/>
@@ -291,7 +290,6 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
 <body>
   <header>
     <div class=\"title\">{site_name}</div>
-    <div class=\"meta\">Comic #{index}</div>
     <div class=\"search\">\n      <div class=\"box\">\n        <input id=\"q\" type=\"search\" placeholder=\"Search comics...\" autocomplete=\"off\" aria-label=\"Search comics\"/>\n        <div class=\"dd\" role=\"listbox\" aria-label=\"Search suggestions\"></div>\n      </div>\n    </div>
   </header>
   <main>
