@@ -362,8 +362,11 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
         if (list.length) openDD(); else closeDD();
       }}
       function update(){{ if(!data) return; var q=input.value; var scored=data.map(function(it){{return {{it:it,s:fuzzyScore(q,it.t)}};}}).filter(function(x){{return x.s<1e9;}}); scored.sort(function(a,b){{return a.s-b.s;}}); render(scored.map(function(x){{return x.it;}}), q); }}
-      function fetchIndex(){{ fetch(PATH_PREFIX+'search-index.json',{{cache:'no-store'}}).then(function(r){{return r.ok?r.json():[];}}).then(function(j){{ data=Array.isArray(j)?j:[]; update(); }}).catch(function(){{ data=[]; }}); }}
+      function showAll(){{ if(!data) return; active=-1; render(data.slice(0,data.length), ''); }}
+      function fetchIndex(){{ fetch(PATH_PREFIX+'search-index.json',{{cache:'no-store'}}).then(function(r){{return r.ok?r.json():[];}}).then(function(j){{ data=Array.isArray(j)?j:[]; if (document.activeElement===input && !(input.value||'').trim()) {{ showAll(); }} else {{ update(); }} }}).catch(function(){{ data=[]; }}); }}
       input.addEventListener('input', function(){{ active=-1; update(); }});
+      input.addEventListener('focus', function(){{ if(!data) fetchIndex(); else if(!(input.value||'').trim()) showAll(); }});
+      input.addEventListener('click', function(){{ if(data && !(input.value||'').trim()) showAll(); }});
       input.addEventListener('keydown', function(e){{ var items=dd.querySelectorAll('.item'); if(e.key==='ArrowDown'){{ e.preventDefault(); if(items.length){{ active=(active+1)%items.length; items.forEach((n,i)=>n.classList.toggle('active',i===active)); }} }} else if(e.key==='ArrowUp'){{ e.preventDefault(); if(items.length){{ active=(active-1+items.length)%items.length; items.forEach((n,i)=>n.classList.toggle('active',i===active)); }} }} else if(e.key==='Enter'){{ if(active>=0 && items[active]){{ e.preventDefault(); items[active].dispatchEvent(new Event('mousedown')); }} }} else if(e.key==='Escape'){{ closeDD(); }} }});
       document.addEventListener('click', function(e){{ if(!box.contains(e.target)) closeDD(); }});
       fetchIndex();
