@@ -372,7 +372,17 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
       input.addEventListener('keydown', function(e){{
         var items=dd.querySelectorAll('.item');
         function highlight(){{
-          for (var i=0;i<items.length;i++){{ items[i].classList.toggle('active', i===active); }}
+          for (var i=0;i<items.length;i++){{
+            items[i].classList.toggle('active', i===active);
+            // Force visible styling even if CSS specificity conflicts
+            if (i===active){{
+              items[i].style.background = '#0b1f4b';
+              items[i].style.color = '#ffffff';
+            }} else {{
+              items[i].style.background = '';
+              items[i].style.color = '';
+            }}
+          }}
           if (active>=0 && items[active] && typeof items[active].scrollIntoView === 'function'){{
             try {{ items[active].scrollIntoView({{block:'nearest'}}); }} catch(e){{}}
           }}
