@@ -142,7 +142,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .nav-btn.next{right:0}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
     /* Search */
-    .search{margin-top:8px;display:flex;justify-content:center}
+    .search{margin-top:16px;display:flex;justify-content:center}
     .search .box{position:relative;width:min(520px,92vw)}
     .search input[type="search"]{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #222937;background:#0e1220;color:#e6e6e6;outline:none}
     .search input[type="search"]::placeholder{color:#8b93a7}
