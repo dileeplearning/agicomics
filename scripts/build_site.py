@@ -89,7 +89,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     main{padding:24px 16px;max-width:980px;margin:0 auto}
     .comic{display:flex;flex-direction:column;align-items:center;width:100%}
     .comic .img-wrap{position:relative;display:inline-block}
-    .img-top{position:absolute;top:-36px;left:40px;right:40px;display:flex;align-items:center;justify-content:center;gap:12px;pointer-events:none}
+    .img-top{position:absolute;top:-36px;left:0;right:0;width:100%;display:flex;align-items:center;justify-content:center;text-align:center;gap:12px;pointer-events:none}
     .img-top .title{font-weight:700;font-size:18px;color:#e6e6e6;pointer-events:auto}
     .img-top .likes{display:inline-flex;align-items:center;gap:8px;pointer-events:auto}
     .comic img{max-width:100%;height:auto;max-height:var(--img-max-h);object-fit:contain;border-radius:2px}
