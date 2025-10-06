@@ -91,10 +91,10 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .comic .img-wrap{position:relative;display:inline-block}
     .img-top{position:absolute;top:-28px;left:50%;transform:translateX(-50%);max-width:calc(100% - 80px);display:flex;align-items:center;justify-content:center;text-align:center;gap:12px;pointer-events:none;z-index:1}
     .img-top .title{font-weight:700;font-size:18px;color:#e6e6e6;pointer-events:auto}
-    .img-top .likes{display:inline-flex;align-items:center;gap:8px;pointer-events:auto}
+    .img-top .likes{display:inline-flex;align-items:center;gap:8px;pointer-events:auto;border-left:1px solid #2b3658;padding-left:12px;margin-left:12px}
     .img-top{position:absolute;top:-28px;left:50%;transform:translateX(-50%);max-width:calc(100% - 80px);display:flex;align-items:center;justify-content:center;text-align:center;gap:12px;pointer-events:none;z-index:1}
     .img-top .title{font-weight:700;font-size:18px;color:#e6e6e6;pointer-events:auto}
-    .img-top .likes{display:inline-flex;align-items:center;gap:8px;pointer-events:auto}
+    .img-top .likes{display:inline-flex;align-items:center;gap:8px;pointer-events:auto;border-left:1px solid #2b3658;padding-left:12px;margin-left:12px}
     .comic img{max-width:100%;height:auto;max-height:var(--img-max-h);object-fit:contain;border-radius:2px}
     .meta{margin-top:8px;color:var(--muted);text-align:center}
     .likes{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:14px}
