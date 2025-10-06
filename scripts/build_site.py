@@ -364,43 +364,21 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
         }});
         if (list.length) openDD(); else closeDD();
       }}
-      function update(){{ if(!data) return; var q=input.value; var scored=data.map(function(it){{return {{it:it,s:fuzzyScore(q,it.t)}};}}).filter(function(x){{return x.s<1e9;}}); scored.sort(function(a,b){{return a.s-b.s;}}); render(scored.map(function(x){{return x.it;}}), q); }}
-      function showAll(){{ if(!data) return; active=-1; render(data.slice(0,data.length), ''); }}
+      var results=null; var WINDOW_SIZE=10; var windowStart=0;
+      function adjustWindow(){{ if(!results||!results.length) return; if (active<0) return; if (active < windowStart) windowStart = active; else if (active >= windowStart + WINDOW_SIZE) windowStart = active - WINDOW_SIZE + 1; windowStart = Math.max(0, Math.min(windowStart, Math.max(0, results.length - WINDOW_SIZE))); }}
+      function update(){{ if(!data) return; var q=input.value; var scored=data.map(function(it){{return {{it:it,s:fuzzyScore(q,it.t)}};}}).filter(function(x){{return x.s<1e9;}}); scored.sort(function(a,b){{return a.s-b.s;}}); results = scored.map(function(x){{return x.it;}}); if(results.length===0){{ active=-1; windowStart=0; }} else if (active>=results.length) {{ active = results.length-1; }} adjustWindow(); render(results, q); }}
+      function showAll(){{ if(!data) return; results = data.slice(); active=-1; windowStart=0; render(results, ''); }}
       function fetchIndex(){{ fetch(PATH_PREFIX+'search-index.json',{{cache:'no-store'}}).then(function(r){{return r.ok?r.json():[];}}).then(function(j){{ data=Array.isArray(j)?j:[]; if (document.activeElement===input && !(input.value||'').trim()) {{ showAll(); }} else {{ update(); }} }}).catch(function(){{ data=[]; }}); }}
       input.addEventListener('input', function(){{ active=-1; update(); }});
       input.addEventListener('focus', function(){{ if(!data) fetchIndex(); else if(!(input.value||'').trim()) showAll(); }});
       input.addEventListener('click', function(){{ if(data && !(input.value||'').trim()) showAll(); }});
       input.addEventListener('keydown', function(e){{
-        var items=dd.querySelectorAll('.item');
-        function highlight(){{
-          for (var i=0;i<items.length;i++){{
-            items[i].classList.toggle('active', i===active);
-            // Force visible styling even if CSS specificity conflicts
-            if (i===active){{
-              items[i].style.background = '#0b1f4b';
-              items[i].style.color = '#ffffff';
-            }} else {{
-              items[i].style.background = '';
-              items[i].style.color = '';
-            }}
-          }}
-          if (active>=0 && items[active] && typeof items[active].scrollIntoView === 'function'){{
-            try {{ items[active].scrollIntoView({{block:'nearest'}}); }} catch(e){{}}
-          }}
-        }}
         if(e.key==='ArrowDown'){{
-          e.preventDefault();
-          if(items.length){{ active=(active+1)%items.length; highlight(); }}
+          e.preventDefault(); var total = results ? results.length : 0; if(!total) return; active = (active<0?0:active+1); if (active>=total) active=total-1; adjustWindow(); render(results, input.value);
         }} else if(e.key==='ArrowUp'){{
-          e.preventDefault();
-          if(items.length){{ active=(active-1+items.length)%items.length; highlight(); }}
+          e.preventDefault(); var total2 = results ? results.length : 0; if(!total2) return; active = (active<=0?0:active-1); adjustWindow(); render(results, input.value);
         }} else if(e.key==='Enter'){{
-          if(items.length){{
-            e.preventDefault();
-            if (active<0) active=0;
-            var target=items[active];
-            if (target) target.dispatchEvent(new Event('mousedown'));
-          }}
+          var total3 = results ? results.length : 0; if(total3){{ e.preventDefault(); if (active<0) active=0; var slug = results[active] && results[active].s; if (slug) window.location.href = PATH_PREFIX+'c/'+slug+'/'; }}
         }} else if(e.key==='Escape'){{ closeDD(); }}
       }});
       document.addEventListener('click', function(e){{ if(!box.contains(e.target)) closeDD(); }});
