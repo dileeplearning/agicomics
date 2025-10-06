@@ -349,7 +349,8 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
       function closeDD(){{ dd.classList.remove('open'); active=-1; }}
       function render(list, q){{
         dd.innerHTML='';
-        list.slice(0,10).forEach(function(it,i){{
+        // Render full result set; .dd limits visible height so ~10 show at once
+        list.forEach(function(it,i){{
           var div=document.createElement('div');
           div.className='item'+(i===active?' active':'');
           div.setAttribute('role','option');
