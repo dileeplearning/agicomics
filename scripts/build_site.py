@@ -144,7 +144,9 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .search .dd.open{display:block}
     .search .item{padding:8px 10px;cursor:pointer}
     .search .item em{font-style:normal;color:#9bb5ff}
-    .search .item:hover,.search .item.active{background:#12182a}
+    .search .item:hover,.search .item.active{background:#1a2540;color:#e8efff}
+    .search .item.active{border-left:3px solid #7aa2ff}
+    .search .item.active em{color:#cfe1ff}
     """
 
     # Optional collapsible explanation block (from description)
@@ -371,6 +373,9 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
         var items=dd.querySelectorAll('.item');
         function highlight(){{
           for (var i=0;i<items.length;i++){{ items[i].classList.toggle('active', i===active); }}
+          if (active>=0 && items[active] && typeof items[active].scrollIntoView === 'function'){{
+            try {{ items[active].scrollIntoView({{block:'nearest'}}); }} catch(e){{}}
+          }}
         }}
         if(e.key==='ArrowDown'){{
           e.preventDefault();
