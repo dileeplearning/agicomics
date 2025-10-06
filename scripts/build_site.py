@@ -120,6 +120,8 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .share svg{width:22px;height:22px;display:block}
     .share img.icon-x{filter: invert(1)}
     .desc{margin-top:8px;max-width:800px;color:#d0d4d9;text-align:center}
+    .desc strong{font-size:20px}
+    .desc strong{font-size:20px}
     /* Title + inline likes */
     /* Title centered */
     .desc{display:block}
