@@ -135,6 +135,16 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .nav-btn.prev{left:0}
     .nav-btn.next{right:0}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+    /* Search */
+    .search{margin-top:8px;display:flex;justify-content:center}
+    .search .box{position:relative;width:min(520px,92vw)}
+    .search input[type="search"]{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #222937;background:#0e1220;color:#e6e6e6;outline:none}
+    .search input[type="search"]::placeholder{color:#8b93a7}
+    .search .dd{position:absolute;top:100%;left:0;right:0;background:#0b0f1a;border:1px solid #20263b;border-top:none;border-radius:0 0 8px 8px;max-height:280px;overflow:auto;z-index:20;display:none}
+    .search .dd.open{display:block}
+    .search .item{padding:8px 10px;cursor:pointer}
+    .search .item em{font-style:normal;color:#9bb5ff}
+    .search .item:hover,.search .item.active{background:#12182a}
     """
 
     # Optional collapsible explanation block (from description)
@@ -159,6 +169,12 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
   <header>
     <div class=\"title\">{site_name}</div>
     <div class=\"meta\">Comic #{index}</div>
+    <div class=\"search\">
+      <div class=\"box\">
+        <input id=\"q\" type=\"search\" placeholder=\"Search comics...\" autocomplete=\"off\" aria-label=\"Search comics\"/>
+        <div class=\"dd\" role=\"listbox\" aria-label=\"Search suggestions\"></div>
+      </div>
+    </div>
   </header>
   <main>
     <div class=\"comic\">
@@ -265,6 +281,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
   <header>
     <div class=\"title\">{site_name}</div>
     <div class=\"meta\">Comic #{index}</div>
+    <div class=\"search\">\n      <div class=\"box\">\n        <input id=\"q\" type=\"search\" placeholder=\"Search comics...\" autocomplete=\"off\" aria-label=\"Search comics\"/>\n        <div class=\"dd\" role=\"listbox\" aria-label=\"Search suggestions\"></div>\n      </div>\n    </div>
   </header>
   <main>
     <div class=\"comic\">\n      <div class=\"img-wrap\">\n        <a class=\"nav-btn prev\" href=\"{path_prefix}c/{prev_slug}/\" aria-label=\"Previous comic\">&#8592;</a>
@@ -307,6 +324,50 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
       if (e.key === 'ArrowLeft' || e.key === 'h') {{ if (prev) {{ e.preventDefault(); go(prev.getAttribute('href')); }} }}
       else if (e.key === 'ArrowRight' || e.key === 'l') {{ if (next) {{ e.preventDefault(); go(next.getAttribute('href')); }} }}
     }});
+    // Search autocomplete (titles)
+    (function(){{
+      var PATH_PREFIX = "{path_prefix}";
+      function norm(s){{ return (s||'').toLowerCase().replace(/[^a-z0-9]+/g,''); }}
+      function fuzzyScore(q, t){{
+        var nq = norm(q), nt = norm(t);
+        if (!nq) return 1e9;
+        var idx = nt.indexOf(nq);
+        if (idx >= 0) return idx;
+        var qi=0, score=0;
+        for (var i=0;i<nt.length && qi<nq.length;i++){{ if (nt[i]===nq[qi]){{ qi++; score+=i; }} }}
+        if (qi===nq.length) return 500+score;
+        return 1e9;
+      }}
+      var box = document.querySelector('.search .box');
+      if (!box) return;
+      var input = box.querySelector('#q');
+      var dd = box.querySelector('.dd');
+      var data = null; var active = -1;
+      function openDD(){{ dd.classList.add('open'); }}
+      function closeDD(){{ dd.classList.remove('open'); active=-1; }}
+      function render(list, q){{
+        dd.innerHTML='';
+        list.slice(0,10).forEach(function(it,i){{
+          var div=document.createElement('div');
+          div.className='item'+(i===active?' active':'');
+          div.setAttribute('role','option');
+          var title=it.t; var nq=(q||'').trim().toLowerCase();
+          var pos=title.toLowerCase().indexOf(nq);
+          if(nq && pos>=0){{
+            div.innerHTML=title.slice(0,pos)+'<em>'+title.slice(pos,pos+nq.length)+'</em>'+title.slice(pos+nq.length);
+          }} else {{ div.textContent=title; }}
+          div.addEventListener('mousedown', function(ev){{ ev.preventDefault(); window.location.href = PATH_PREFIX+'c/'+it.s+'/'; }});
+          dd.appendChild(div);
+        }});
+        if (list.length) openDD(); else closeDD();
+      }}
+      function update(){{ if(!data) return; var q=input.value; var scored=data.map(function(it){{return {{it:it,s:fuzzyScore(q,it.t)}};}}).filter(function(x){{return x.s<1e9;}}); scored.sort(function(a,b){{return a.s-b.s;}}); render(scored.map(function(x){{return x.it;}}), q); }}
+      function fetchIndex(){{ fetch(PATH_PREFIX+'search-index.json',{{cache:'no-store'}}).then(function(r){{return r.ok?r.json():[];}}).then(function(j){{ data=Array.isArray(j)?j:[]; update(); }}).catch(function(){{ data=[]; }}); }}
+      input.addEventListener('input', function(){{ active=-1; update(); }});
+      input.addEventListener('keydown', function(e){{ var items=dd.querySelectorAll('.item'); if(e.key==='ArrowDown'){{ e.preventDefault(); if(items.length){{ active=(active+1)%items.length; items.forEach((n,i)=>n.classList.toggle('active',i===active)); }} }} else if(e.key==='ArrowUp'){{ e.preventDefault(); if(items.length){{ active=(active-1+items.length)%items.length; items.forEach((n,i)=>n.classList.toggle('active',i===active)); }} }} else if(e.key==='Enter'){{ if(active>=0 && items[active]){{ e.preventDefault(); items[active].dispatchEvent(new Event('mousedown')); }} }} else if(e.key==='Escape'){{ closeDD(); }} }});
+      document.addEventListener('click', function(e){{ if(!box.contains(e.target)) closeDD(); }});
+      fetchIndex();
+    }})();
     // Lightweight global likes using optional Worker API or CountAPI fallback
     function apiGet(slug){{
       if (!LIKE_API_BASE) return null;
@@ -539,6 +600,14 @@ def main():
                     available_icons[os.path.splitext(name)[0].lower()] = True
                 except Exception:
                     pass
+
+    # Generate a lightweight search index (title + slug) for client-side autocomplete
+    try:
+        search_index = [{"t": c.get("title", ""), "s": c.get("slug", "")} for c in comics]
+        with open(os.path.join(out_dir, "search-index.json"), "w", encoding="utf-8") as f:
+            json.dump(search_index, f, ensure_ascii=False)
+    except Exception:
+        pass
 
     # Generate per-index pages and slug permalinks
     latest_index = total
