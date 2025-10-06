@@ -367,7 +367,26 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
       input.addEventListener('input', function(){{ active=-1; update(); }});
       input.addEventListener('focus', function(){{ if(!data) fetchIndex(); else if(!(input.value||'').trim()) showAll(); }});
       input.addEventListener('click', function(){{ if(data && !(input.value||'').trim()) showAll(); }});
-      input.addEventListener('keydown', function(e){{ var items=dd.querySelectorAll('.item'); if(e.key==='ArrowDown'){{ e.preventDefault(); if(items.length){{ active=(active+1)%items.length; items.forEach((n,i)=>n.classList.toggle('active',i===active)); }} }} else if(e.key==='ArrowUp'){{ e.preventDefault(); if(items.length){{ active=(active-1+items.length)%items.length; items.forEach((n,i)=>n.classList.toggle('active',i===active)); }} }} else if(e.key==='Enter'){{ if(active>=0 && items[active]){{ e.preventDefault(); items[active].dispatchEvent(new Event('mousedown')); }} }} else if(e.key==='Escape'){{ closeDD(); }} }});
+      input.addEventListener('keydown', function(e){{
+        var items=dd.querySelectorAll('.item');
+        function highlight(){{
+          for (var i=0;i<items.length;i++){{ items[i].classList.toggle('active', i===active); }}
+        }}
+        if(e.key==='ArrowDown'){{
+          e.preventDefault();
+          if(items.length){{ active=(active+1)%items.length; highlight(); }}
+        }} else if(e.key==='ArrowUp'){{
+          e.preventDefault();
+          if(items.length){{ active=(active-1+items.length)%items.length; highlight(); }}
+        }} else if(e.key==='Enter'){{
+          if(items.length){{
+            e.preventDefault();
+            if (active<0) active=0;
+            var target=items[active];
+            if (target) target.dispatchEvent(new Event('mousedown'));
+          }}
+        }} else if(e.key==='Escape'){{ closeDD(); }}
+      }});
       document.addEventListener('click', function(e){{ if(!box.contains(e.target)) closeDD(); }});
       fetchIndex();
     }})();
