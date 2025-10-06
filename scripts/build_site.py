@@ -165,7 +165,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
 <html lang=\"en\">
 <head>
   <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>{title}</title>
-  <meta name=\"description\" content=\"{desc}\">\n  <link rel=\"canonical\" href=\"{canonical}\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:title\" content=\"{title}\">\n  <meta property=\"og:description\" content=\"{desc}\">\n  <meta property=\"og:image\" content=\"{og_image}\">\n  <meta property=\"og:url\" content=\"{canonical}\">\n  {og_extras_block}\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:title\" content=\"{title}\">\n  <meta name=\"twitter:description\" content=\"{desc}\">\n  <meta name=\"twitter:image\" content=\"{og_image}\">\n  <meta name=\"twitter:image:alt\" content=\"{comic['title']}\">\n  {twitter_site_tag}<style>{css}</style>
+  <meta name=\"description\" content=\"{desc}\">\n  <link rel=\"canonical\" href=\"{canonical}\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:title\" content=\"{title}\">\n  <meta property=\"og:description\" content=\"{desc}\">\n  <meta property=\"og:image\" content=\"{og_image}\">\n  <meta property=\"og:url\" content=\"{canonical}\">\n  {og_extras_block}\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:title\" content=\"{title}\">\n  <meta name=\"twitter:description\" content=\"{desc}\">\n  <meta name=\"twitter:image\" content=\"{og_image}\">\n  <meta name=\"twitter:image:alt\" content=\"{comic['title']}\">\n  {twitter_site_tag}<style>{css}</style>\n  <script src=\"{path_prefix}swipe.js\" defer></script>
 </head>
 <body>
   <header>
@@ -277,7 +277,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
 
     html = f"""<!doctype html>
 <html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>{title}</title>
-  <meta name=\"description\" content=\"{desc}\">\n  <link rel=\"canonical\" href=\"{canonical}\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:title\" content=\"{title}\">\n  <meta property=\"og:description\" content=\"{desc}\">\n  <meta property=\"og:image\" content=\"{og_image}\">\n  <meta property=\"og:url\" content=\"{canonical}\">\n  {og_extras_block}\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:title\" content=\"{title}\">\n  <meta name=\"twitter:description\" content=\"{desc}\">\n  <meta name=\"twitter:image\" content=\"{og_image}\">\n  <meta name=\"twitter:image:alt\" content=\"{comic['title']}\">\n  {twitter_site_tag}<style>{css}</style>
+  <meta name=\"description\" content=\"{desc}\">\n  <link rel=\"canonical\" href=\"{canonical}\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:title\" content=\"{title}\">\n  <meta property=\"og:description\" content=\"{desc}\">\n  <meta property=\"og:image\" content=\"{og_image}\">\n  <meta property=\"og:url\" content=\"{canonical}\">\n  {og_extras_block}\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:title\" content=\"{title}\">\n  <meta name=\"twitter:description\" content=\"{desc}\">\n  <meta name=\"twitter:image\" content=\"{og_image}\">\n  <meta name=\"twitter:image:alt\" content=\"{comic['title']}\">\n  {twitter_site_tag}<style>{css}</style>\n  <script src=\"{path_prefix}swipe.js\" defer></script>
 </head>
 <body>
   <header>
@@ -326,7 +326,8 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
       if (e.key === 'ArrowLeft' || e.key === 'h') {{ if (prev) {{ e.preventDefault(); go(prev.getAttribute('href')); }} }}
       else if (e.key === 'ArrowRight' || e.key === 'l') {{ if (next) {{ e.preventDefault(); go(next.getAttribute('href')); }} }}
     }});
-    // Search autocomplete (titles)
+    
+// Search autocomplete (titles)
     (function(){{
       var PATH_PREFIX = "{path_prefix}";
       function norm(s){{ return (s||'').toLowerCase().replace(/[^a-z0-9]+/g,''); }}
@@ -626,6 +627,31 @@ def main():
         search_index = [{"t": c.get("title", ""), "s": c.get("slug", "")} for c in comics]
         with open(os.path.join(out_dir, "search-index.json"), "w", encoding="utf-8") as f:
             json.dump(search_index, f, ensure_ascii=False)
+    except Exception:
+        pass
+
+    # Generate a lightweight search index (title + slug) for client-side autocomplete
+    try:
+        search_index = [{"t": c.get("title", ""), "s": c.get("slug", "")} for c in comics]
+        with open(os.path.join(out_dir, "search-index.json"), "w", encoding="utf-8") as f:
+            json.dump(search_index, f, ensure_ascii=False)
+    except Exception:
+        pass
+
+    # Write a small swipe.js to support mobile swipe left/right navigation
+    try:
+        swipe_js = (
+            "(function(){\n"
+            "  var startX=0,startY=0,startT=0,tracking=false,canceled=false;\n"
+            "  function isInteractive(el){ if(!el) return false; var tag=el.tagName?el.tagName.toLowerCase():''; if(tag==='input'||tag==='textarea'||tag==='select'||tag==='button') return true; if(el.closest && (el.closest('.search')||el.closest('.dd'))) return true; return false; }\n"
+            "  document.addEventListener('touchstart', function(e){ if(!e.touches||e.touches.length!==1) return; var t=e.touches[0]; if(isInteractive(e.target)) return; startX=t.clientX; startY=t.clientY; startT=Date.now(); tracking=true; canceled=false; }, { passive:true });\n"
+            "  document.addEventListener('touchmove', function(e){ if(!tracking||canceled||!e.touches||e.touches.length!==1) return; var t=e.touches[0]; var dy=Math.abs(t.clientY-startY); if(dy>30){ canceled=true; } }, { passive:true });\n"
+            "  document.addEventListener('touchend', function(e){ if(!tracking||canceled){ tracking=false; return; } var dt=Date.now()-startT; if(dt>1000){ tracking=false; return; } var ch=e.changedTouches && e.changedTouches[0]; var endX=ch?ch.clientX:startX; var dx=endX-startX; var prev=document.querySelector('a.nav-btn.prev')||document.querySelector('a[rel=\"prev\"]'); var next=document.querySelector('a.nav-btn.next')||document.querySelector('a[rel=\"next\"]'); if(dx<=-50 && next){ window.location.href=next.getAttribute('href'); } else if(dx>=50 && prev){ window.location.href=prev.getAttribute('href'); } tracking=false; }, { passive:true });\n"
+            "  document.addEventListener('touchcancel', function(){ tracking=false; }, { passive:true });\n"
+            "})();\n"
+        )
+        with open(os.path.join(out_dir, "swipe.js"), "w", encoding="utf-8") as f:
+            f.write(swipe_js)
     except Exception:
         pass
 
