@@ -234,6 +234,9 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
     .comic{display:flex;flex-direction:column;align-items:center;width:100%}
     .comic .img-wrap{position:relative;display:inline-block}
     .comic img{max-width:100%;height:auto;max-height:var(--img-max-h);object-fit:contain;border-radius:2px}
+    .img-top{position:absolute;top:-36px;left:50%;transform:translateX(-50%);max-width:calc(100% - 80px);display:flex;align-items:center;justify-content:center;text-align:center;gap:12px;pointer-events:none}
+    .img-top .title{font-weight:700;font-size:18px;color:#e6e6e6;pointer-events:auto}
+    .img-top .likes{display:inline-flex;align-items:center;gap:8px;pointer-events:auto}
     .meta{margin-top:8px;color:var(--muted);text-align:center}
     .share{display:flex;gap:16px;justify-content:center;align-items:center;margin-top:16px}
     .share .label{color:var(--muted);font-size:14px}
