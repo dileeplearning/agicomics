@@ -98,6 +98,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .comic img{max-width:100%;height:auto;max-height:var(--img-max-h);object-fit:contain;border-radius:2px}
     .meta{margin-top:8px;color:var(--muted);text-align:center}
     .likes{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:14px}
+    .likes{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:14px}
     .like-btn{display:inline-flex;align-items:center;justify-content:center;padding:0;border:0;background:transparent;cursor:pointer;-webkit-appearance:none;appearance:none;outline:none}
     .like-btn:hover{opacity:.9}
     .like-count{font-variant-numeric:tabular-nums;color:#cbd5e1}
@@ -293,13 +294,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
     <div class=\"search\">\n      <div class=\"box\">\n        <input id=\"q\" type=\"search\" placeholder=\"Search comics...\" autocomplete=\"off\" aria-label=\"Search comics\"/>\n        <div class=\"dd\" role=\"listbox\" aria-label=\"Search suggestions\"></div>\n      </div>\n    </div>
   </header>
   <main>
-    <div class=\"comic\">\n      <div class=\"img-wrap\">
-        <a class=\"nav-btn prev\" href=\"{path_prefix}c/{prev_slug}/\" aria-label=\"Previous comic\">&#8592;</a>
-        <div class=\"img-top\"><span class=\"title\">{comic['title']}</span> <span class=\"likes\" data-slug=\"{comic['slug']}\"><button class=\"like-btn\" type=\"button\" aria-pressed=\"false\" aria-label=\"Like this comic\"><span class=\"heart\" aria-hidden=\"true\">❤</span></button> <span class=\"like-count\" aria-live=\"polite\">0</span></span></div>
-        <a class=\"nav-btn next\" href=\"{path_prefix}c/{next_slug}/\" aria-label=\"Next comic\">&#8594;</a>
-        <img src=\"{image_url}\" alt=\"{comic['title']}\" loading=\"eager\"{size_attrs}>
-      </div>
-      {explanation_html}
+    <div class=\"comic\">\n      <div class=\"img-wrap\">\n        <a class=\"nav-btn prev\" href=\"{path_prefix}c/{prev_slug}/\" aria-label=\"Previous comic\">&#8592;</a>\n        <a class=\"nav-btn next\" href=\"{path_prefix}c/{next_slug}/\" aria-label=\"Next comic\">&#8594;</a>\n        <img src=\"{image_url}\" alt=\"{comic['title']}\" loading=\"eager\"{size_attrs}>\n      </div>\n      <div class=\"desc\"><strong>{comic['title']}</strong></div>\n      <div class=\"likes\" data-slug=\"{comic['slug']}\"><button class=\"like-btn\" type=\"button\" aria-pressed=\"false\" aria-label=\"Like this comic\"><span class=\"heart\" aria-hidden=\"true\">❤</span></button> <span class=\"like-count\" aria-live=\"polite\">0</span></div>\n      {explanation_html}
       <div class=\"meta\"><a href=\"{direct_image_link}\">Direct image link</a> • <a href=\"{canonical_url}\">Permalink</a></div>
       <div class=\"share\">\n+        <span class=\"label\">share on</span>
         <a href=\"{x_url}\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on X\" title=\"Share on X\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 4l16 16M20 4L4 20\"/></svg></a>
