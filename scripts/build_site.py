@@ -143,10 +143,10 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .search .dd{position:absolute;top:100%;left:0;right:0;background:#0b0f1a;border:1px solid #20263b;border-top:none;border-radius:0 0 8px 8px;max-height:280px;overflow:auto;z-index:20;display:none}
     .search .dd.open{display:block}
     .search .item{padding:8px 10px;cursor:pointer}
-    .search .item em{font-style:normal;color:#9bb5ff}
-    .search .item:hover,.search .item.active{background:#1a2540;color:#e8efff}
-    .search .item.active{border-left:3px solid #7aa2ff}
-    .search .item.active em{color:#cfe1ff}
+    .search .item em{font-style:normal;color:#93c5fd}
+    .search .item:hover{background:#0b1f4b;color:#ffffff}
+    .search .item.active{background:#0b1f4b;color:#ffffff;border-left:3px solid #3b82f6}
+    .search .item.active em{color:#bfdbfe}
     """
 
     # Optional collapsible explanation block (from description)
