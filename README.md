@@ -48,6 +48,15 @@ Notes
 - Social previews use the direct comic image via `og:image`/`twitter:image`.
 - If Pillow is available, WebP versions are generated for faster loads and used on pages; OG still points to the original PNG/JPEG for compatibility.
 
+Embeddable Previews (oEmbed)
+
+- The pages include Open Graph and Twitter card tags, which most platforms (Slack, Discord, Reddit, iMessage, etc.) already use to unfurl image previews from just the link.
+- For sites/CMSes that rely on oEmbed discovery (e.g., WordPress, Notion in some cases), you can enable a JSON oEmbed endpoint and discovery:
+  - Deploy the Cloudflare Worker in `server/cloudflare-worker/worker.js` (see DEPLOY.md) and expose an endpoint like `https://your-worker.workers.dev/oembed`.
+  - Add `"oembed_endpoint": "https://your-worker.workers.dev/oembed"` to `site_config.json` (or set `OEMBED_ENDPOINT` at build time).
+  - Rebuild the site; each page will advertise `<link rel="alternate" type="application/json+oembed" ...>` for one‑click embedding from just the URL.
+  - The Worker fetches the comic page, reads OG tags, and returns a minimal `type: "photo"` oEmbed response pointing at the comic image.
+
 Global Likes (increment-only)
 
 - Pages include a heart button that increments a global counter.

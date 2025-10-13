@@ -93,3 +93,17 @@ Notes
 - Internal links/assets are prefixed by `base_path` to work at `/agicomics/`.
 - Canonical and social preview URLs (Open Graph / Twitter) are absolute using `base_url + base_path`.
 
+oEmbed (optional, for embeddable previews)
+
+- Many platforms unfurl previews from Open Graph alone. To support oEmbed-aware sites that auto-embed from just a link:
+  1) Deploy the Cloudflare Worker in `server/cloudflare-worker/worker.js` and set two optional environment variables:
+     - `PROVIDER_NAME=AGI Comics`
+     - `PROVIDER_URL=https://dileeplearning.github.io/agicomics/`
+  2) Ensure the Worker routes include `/oembed` and is publicly reachable, e.g., `https://agicomics-embed.workers.dev/oembed`.
+  3) In `site_config.json`, add: `"oembed_endpoint": "https://agicomics-embed.workers.dev/oembed"` (or export `OEMBED_ENDPOINT=...` before building).
+  4) Rebuild: `python3 scripts/build_site.py`.
+
+Testing
+
+- Open Graph: use Facebook Sharing Debugger, Twitter Card Validator, or https://www.opengraph.xyz/ with a comic link.
+- oEmbed: `curl "https://<your-worker>/oembed?url=https://dileeplearning.github.io/agicomics/c/<slug>/" | jq` should return a `type: photo` JSON with `url`, `width`, `height`.

@@ -21,12 +21,15 @@ def load_site_config(root):
     cfg = {
         "site_name": "AGI Comics",
         "base_url": os.environ.get("BASE_URL", "/"),  # e.g. https://example.com
+        "base_path": os.environ.get("BASE_PATH", None),
         "author": "",
         "description": "A comic series.",
         "twitter_handle": "",  # e.g. @yourhandle
         "explanation_label": os.environ.get("EXPLANATION_LABEL", "Explanation"),
         # Optional global likes API base (e.g., https://likes.example.com/api)
         "likes_api_base": os.environ.get("LIKES_API_BASE", None),
+        # Optional oEmbed endpoint for rich link previews
+        "oembed_endpoint": os.environ.get("OEMBED_ENDPOINT", None),
         # Optional: choose a specific comic to show on the homepage
         # by its slug (e.g., "ag-productivity"). If not set, homepage
         # will mirror the latest comic.
@@ -45,6 +48,16 @@ def load_site_config(root):
     if not bu.endswith("/"):
         bu += "/"
     cfg["base_url"] = bu
+    # Normalize base_path if present
+    if cfg.get("base_path"):
+        bp = cfg.get("base_path") or "/"
+        if not isinstance(bp, str):
+            bp = "/"
+        if not bp.startswith("/"):
+            bp = "/" + bp
+        if not bp.endswith("/"):
+            bp += "/"
+        cfg["base_path"] = bp
     return cfg
 
 
@@ -285,6 +298,12 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
     size_attrs = ""
     if width and height:
         size_attrs = f" width=\"{int(width)}\" height=\"{int(height)}\""
+
+    # Optional oEmbed discovery link (JSON)
+    oembed_tag = ""
+    if cfg.get("oembed_endpoint"):
+        disc_href = f"{cfg['oembed_endpoint']}?url={quote_plus(canonical)}"
+        oembed_tag = f"<link rel=\"alternate\" type=\"application/json+oembed\" href=\"{disc_href}\" title=\"{site_name}\">"
 
     html = f"""<!doctype html>
 <html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>{title}</title>
@@ -527,7 +546,12 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
     }}
   }})();</script>
 </body>
-</html>"""
+    </html>"""
+    if oembed_tag:
+        try:
+            html = html.replace("</head>", f"  {oembed_tag}\n</head>", 1)
+        except Exception:
+            pass
     return html
 
 
