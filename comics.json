@@ -7,8 +7,7 @@
       "description": "",
       "created": "2019-03-11T10:40:37",
       "ext": ".png",
-      "visible": true,
-      "order": 20
+      "visible": true
     },
     {
       "file": "agi_equivalence 2.png",
@@ -17,8 +16,7 @@
       "description": "",
       "created": "2019-03-16T21:58:03",
       "ext": ".png",
-      "visible": true,
-      "order": 30
+      "visible": true
     },
     {
       "file": "agi_generality 2.png",
@@ -27,8 +25,7 @@
       "description": "",
       "created": "2019-03-16T21:58:40",
       "ext": ".png",
-      "visible": true,
-      "order": 40
+      "visible": true
     },
     {
       "file": "agi_irrelevance 2.png",
@@ -37,8 +34,7 @@
       "description": "",
       "created": "2019-03-16T21:59:34",
       "ext": ".png",
-      "visible": true,
-      "order": 50
+      "visible": true
     },
     {
       "file": "agi_humility 2.png",
@@ -47,8 +43,7 @@
       "description": "",
       "created": "2019-03-16T22:00:12",
       "ext": ".png",
-      "visible": true,
-      "order": 60
+      "visible": true
     },
     {
       "file": "ag_alignment 2.png",
@@ -57,8 +52,7 @@
       "description": "",
       "created": "2019-04-28T10:56:25",
       "ext": ".png",
-      "visible": true,
-      "order":70
+      "visible": true
     },
     {
       "file": "agi_definition 2.png",
@@ -67,8 +61,7 @@
       "description": "",
       "created": "2019-06-07T22:19:26",
       "ext": ".png",
-      "visible": true,
-      "order": 80
+      "visible": true
     },
     {
       "file": "ag_reality 2.png",
@@ -77,8 +70,7 @@
       "description": "",
       "created": "2019-09-07T15:23:29",
       "ext": ".png",
-      "visible": true,
-      "order": 90
+      "visible": true
     },
     {
       "file": "ag_inspiration 2.png",
@@ -87,8 +79,7 @@
       "description": "",
       "created": "2019-09-27T17:35:00",
       "ext": ".png",
-      "visible": true,
-      "order": 100
+      "visible": true
     },
     {
       "file": "ag_preface 2.png",
@@ -106,18 +97,7 @@
       "description": "",
       "created": "2019-11-07T22:49:27",
       "ext": ".png",
-      "visible": true,
-      "order": 110
-    },
-    {
-      "file": "ag_dilemma2 2.png",
-      "slug": "ag-dilemma2-2-2",
-      "title": "Artificial General Dilemma",
-      "description": "",
-      "created": "2019-11-15T23:01:57",
-      "ext": ".png",
-      "visible": true,
-      "order": 120
+      "visible": true
     },
     {
       "file": "ag_debate 2.png",
@@ -126,8 +106,7 @@
       "description": "",
       "created": "2019-11-16T15:38:04",
       "ext": ".png",
-      "visible": true,
-      "order": 130
+      "visible": true
     },
     {
       "file": "ag_wish 2.png",
@@ -136,8 +115,7 @@
       "description": "",
       "created": "2019-12-31T16:16:27",
       "ext": ".png",
-      "visible": true,
-      "order": 140
+      "visible": true
     },
     {
       "file": "ag_viewpoints 2.png",
@@ -146,8 +124,7 @@
       "description": "It's that elephant thing",
       "created": "2020-03-03T23:41:37",
       "ext": ".png",
-      "visible": true,
-      "order": 1
+      "visible": true
     },
     {
       "file": "ag joke 2.png",
@@ -156,8 +133,7 @@
       "description": "",
       "created": "2020-07-25T20:08:20",
       "ext": ".png",
-      "visible": true,
-      "order": 150
+      "visible": true
     },
     {
       "file": "ag_emergence 2.png",
@@ -166,8 +142,7 @@
       "description": "",
       "created": "2020-09-01T04:28:02",
       "ext": ".png",
-      "visible": true,
-      "order": 160
+      "visible": true
     },
     {
       "file": "ag_dichotomy 2.png",
@@ -176,18 +151,7 @@
       "description": "The only sensible explanation of system 1 and system 2",
       "created": "2022-05-24T02:04:31",
       "ext": ".png",
-      "visible": true,
-      "order": 170
-    },
-    {
-      "file": "ag_sota 2.png",
-      "slug": "ag-sota-2-2",
-      "title": "Artificial General Sota",
-      "description": "SOTA: state of the art",
-      "created": "2022-10-23T14:49:21",
-      "ext": ".png",
-      "visible": true,
-      "order": 180
+      "visible": true
     },
     {
       "file": "ag_count 2.png",
@@ -196,8 +160,7 @@
       "description": "",
       "created": "2022-12-06T01:22:30",
       "ext": ".png",
-      "visible": true,
-      "order": 190
+      "visible": true
     },
     {
       "file": "ag_risk 2.png",
@@ -209,34 +172,13 @@
       "visible": false
     },
     {
-      "file": "ag_estimate 2.png",
-      "slug": "ag-estimate-2-2",
-      "title": "Artificial General Estimate",
-      "description": "",
-      "created": "2022-12-10T17:11:45",
-      "ext": ".png",
-      "visible": true,
-      "order": 200
-    },
-    {
       "file": "ag_goalpost 2.png",
       "slug": "ag-goalpost-2-2",
       "title": "Artificial General Goalpost",
       "description": "",
       "created": "2022-12-17T16:53:08",
       "ext": ".png",
-      "visible": true,
-      "order": 210
-    },
-    {
-      "file": "ag_congratulatory 2.png",
-      "slug": "ag-congratulatory-2-2",
-      "title": "Artificial General Technique",
-      "description": "",
-      "created": "2023-02-25T14:00:38",
-      "ext": ".png",
-      "visible": true,
-      "order": 220
+      "visible": true
     },
     {
       "file": "ag_confidence 2.png",
@@ -245,8 +187,7 @@
       "description": "",
       "created": "2023-03-26T17:28:37",
       "ext": ".png",
-      "visible": true,
-      "order": 230
+      "visible": true
     },
     {
       "file": "ag_open 2.png",
@@ -255,8 +196,7 @@
       "description": "",
       "created": "2023-03-26T17:29:03",
       "ext": ".png",
-      "visible": true,
-      "order": 240
+      "visible": true
     },
     {
       "file": "ag_consciousness 2.png",
@@ -265,18 +205,7 @@
       "description": "Probably Approximately Correct (PAC) learning refers to one of the theoretical results in machine learning",
       "created": "2023-08-04T23:18:42",
       "ext": ".png",
-      "visible": true,
-      "order": 250
-    },
-    {
-      "file": "ag_ethics 2.png",
-      "slug": "ag-ethics-2-2",
-      "title": "Artificial General Ethics",
-      "description": "",
-      "created": "2023-09-09T14:55:25",
-      "ext": ".png",
-      "visible": true,
-      "order": 260
+      "visible": true
     },
     {
       "file": "ag_strategy 2.png",
@@ -285,8 +214,7 @@
       "description": "",
       "created": "2023-09-09T15:57:23",
       "ext": ".png",
-      "visible": true,
-      "order": 270
+      "visible": true
     },
     {
       "file": "ag_misalignment 2.png",
@@ -295,8 +223,7 @@
       "description": "",
       "created": "2024-09-05T08:16:35",
       "ext": ".png",
-      "visible": true,
-      "order": 280
+      "visible": true
     },
     {
       "file": "ag_philosophy3 2.png",
@@ -305,8 +232,7 @@
       "description": "",
       "created": "2024-09-05T08:29:14",
       "ext": ".png",
-      "visible": true,
-      "order": 290
+      "visible": true
     },
     {
       "file": "ag_synergy 2.jpeg",
@@ -315,8 +241,7 @@
       "description": "",
       "created": "2024-09-05T18:36:37",
       "ext": ".jpeg",
-      "visible": true,
-      "order": 300
+      "visible": true
     },
     {
       "file": "ag_productivity.png",
@@ -325,8 +250,7 @@
       "description": "",
       "created": "2025-09-16T22:11:34",
       "ext": ".png",
-      "visible": true,
-      "order": 310
+      "visible": true
     },
     {
       "file": "ag_love.jpeg",
@@ -335,8 +259,7 @@
       "description": "",
       "created": "2025-09-17T00:42:57",
       "ext": ".jpeg",
-      "visible": true,
-      "order": 320
+      "visible": true
     },
     {
       "file": "ag_accomplishment.png",
@@ -345,8 +268,7 @@
       "description": "",
       "created": "2025-09-17T17:38:16",
       "ext": ".png",
-      "visible": true,
-      "order": 330
+      "visible": true
     },
     {
       "file": "ag_specialization.png",
@@ -355,8 +277,7 @@
       "description": "",
       "created": "2025-09-21T12:36:27",
       "ext": ".png",
-      "visible": true,
-      "order": 340
+      "visible": true
     },
     {
       "file": "ag_preface 3.png",
@@ -365,8 +286,7 @@
       "description": "",
       "created": "2025-09-21T12:36:33",
       "ext": ".png",
-      "visible": true,
-      "order": 350
+      "visible": true
     },
     {
       "file": "ag_rule.png",
@@ -375,8 +295,7 @@
       "description": "",
       "created": "2025-09-21T15:52:12",
       "ext": ".png",
-      "visible": true,
-      "order": 360
+      "visible": true
     },
     {
       "file": "ag_upgrade.png",
@@ -385,8 +304,43 @@
       "description": "",
       "created": "2025-09-22T19:50:20",
       "ext": ".png",
-      "visible": true,
-      "order": 370
+      "visible": true
+    },
+    {
+      "file": "ag_dilemma2 2.png",
+      "slug": "ag-dilemma2-2-2",
+      "title": "Artificial General Dilemma",
+      "description": "",
+      "created": "2019-11-15T23:01:57",
+      "ext": ".png",
+      "visible": true
+    },
+    {
+      "file": "ag_ethics.png",
+      "slug": "ag-ethics",
+      "title": "Ag Ethics",
+      "description": "",
+      "created": "2025-09-29T13:35:28",
+      "ext": ".png",
+      "visible": true
+    },
+    {
+      "file": "ag_sota.png",
+      "slug": "ag-sota",
+      "title": "Ag Sota",
+      "description": "",
+      "created": "2025-09-29T13:52:56",
+      "ext": ".png",
+      "visible": true
+    },
+    {
+      "file": "ag_breakthrough.png",
+      "slug": "ag-breakthrough",
+      "title": "Ag Breakthrough",
+      "description": "",
+      "created": "2025-09-29T15:02:58",
+      "ext": ".png",
+      "visible": true
     }
   ]
 }
