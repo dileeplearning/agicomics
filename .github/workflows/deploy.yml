@@ -21,8 +21,8 @@ jobs:
 
       - name: Build site
         env:
-          BASE_URL: https://dileeplearning.github.io
-          BASE_PATH: /agicomics/
+          BASE_URL: https://www.agicomics.net
+          BASE_PATH: /
         run: |
           python -m pip install --upgrade pip
           pip install Pillow
@@ -36,3 +36,4 @@ jobs:
           publish_dir: ./public
           publish_branch: gh-pages
           force_orphan: true
+          cname: www.agicomics.net
