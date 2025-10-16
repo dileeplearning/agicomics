@@ -15,6 +15,20 @@ def read_json(path):
 def ensure_dir(path):
     os.makedirs(path, exist_ok=True)
 
+def clean_dir(path):
+    """Remove all contents of a directory without deleting the directory itself."""
+    if not os.path.isdir(path):
+        return
+    for name in os.listdir(path):
+        p = os.path.join(path, name)
+        try:
+            if os.path.isdir(p):
+                shutil.rmtree(p)
+            else:
+                os.remove(p)
+        except Exception:
+            # Ignore cleanup failures; continue best-effort
+            pass
 
 def load_site_config(root):
     # Basic config; can be expanded or overridden by site_config.json
@@ -187,7 +201,7 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
 <html lang=\"en\">
 <head>
   <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>{title}</title>
-  <meta name=\"description\" content=\"{desc}\">\n  <link rel=\"canonical\" href=\"{canonical}\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:title\" content=\"{title}\">\n  <meta property=\"og:description\" content=\"{desc}\">\n  <meta property=\"og:image\" content=\"{og_image}\">\n  <meta property=\"og:url\" content=\"{canonical}\">\n  {og_extras_block}\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:title\" content=\"{title}\">\n  <meta name=\"twitter:description\" content=\"{desc}\">\n  <meta name=\"twitter:image\" content=\"{og_image}\">\n  <meta name=\"twitter:image:alt\" content=\"{comic['title']}\">\n  {twitter_site_tag}<style>{css}</style>\n  <script src=\"{path_prefix}swipe.js\" defer></script>
+  <meta name=\"description\" content=\"{desc}\">\n  <link rel=\"canonical\" href=\"{canonical}\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:title\" content=\"{title}\">\n  <meta property=\"og:description\" content=\"{desc}\">\n  <meta property=\"og:image\" content=\"{og_image}\">\n  <meta property=\"og:image:secure_url\" content=\"{og_image}\">\n  <meta property=\"og:url\" content=\"{canonical}\">\n  <meta property=\"og:site_name\" content=\"{site_name}\">\n  {og_extras_block}\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:title\" content=\"{title}\">\n  <meta name=\"twitter:description\" content=\"{desc}\">\n  <meta name=\"twitter:image\" content=\"{og_image}\">\n  <meta name=\"twitter:image:alt\" content=\"{comic['title']}\">\n  {twitter_site_tag}<style>{css}</style>\n  <script src=\"{path_prefix}swipe.js\" defer></script>
 </head>
 <body>
   <header>
@@ -323,7 +337,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
 
     html = f"""<!doctype html>
 <html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>{title}</title>
-  <meta name=\"description\" content=\"{desc}\">\n  <link rel=\"canonical\" href=\"{canonical}\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:title\" content=\"{title}\">\n  <meta property=\"og:description\" content=\"{desc}\">\n  <meta property=\"og:image\" content=\"{og_image}\">\n  <meta property=\"og:url\" content=\"{canonical}\">\n  {og_extras_block}\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:title\" content=\"{title}\">\n  <meta name=\"twitter:description\" content=\"{desc}\">\n  <meta name=\"twitter:image\" content=\"{og_image}\">\n  <meta name=\"twitter:image:alt\" content=\"{comic['title']}\">\n  {twitter_site_tag}<style>{css}</style>\n  <script src=\"{path_prefix}swipe.js\" defer></script>
+  <meta name=\"description\" content=\"{desc}\">\n  <link rel=\"canonical\" href=\"{canonical}\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:title\" content=\"{title}\">\n  <meta property=\"og:description\" content=\"{desc}\">\n  <meta property=\"og:image\" content=\"{og_image}\">\n  <meta property=\"og:image:secure_url\" content=\"{og_image}\">\n  <meta property=\"og:url\" content=\"{canonical}\">\n  <meta property=\"og:site_name\" content=\"{site_name}\">\n  {og_extras_block}\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:title\" content=\"{title}\">\n  <meta name=\"twitter:description\" content=\"{desc}\">\n  <meta name=\"twitter:image\" content=\"{og_image}\">\n  <meta name=\"twitter:image:alt\" content=\"{comic['title']}\">\n  {twitter_site_tag}<style>{css}</style>\n  <script src=\"{path_prefix}swipe.js\" defer></script>
   {host_redirect_script}
 </head>
 <body>
@@ -623,8 +637,9 @@ def main():
 
     cfg = load_site_config(root)
 
-    # Prepare output directories
+    # Prepare output directories (clean to avoid stale pages with old meta)
     ensure_dir(out_dir)
+    clean_dir(out_dir)
     images_out = os.path.join(out_dir, "images")
     ensure_dir(images_out)
 
