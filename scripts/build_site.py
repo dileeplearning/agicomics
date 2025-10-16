@@ -305,9 +305,26 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
         disc_href = f"{cfg['oembed_endpoint']}?url={quote_plus(canonical)}"
         oembed_tag = f"<link rel=\"alternate\" type=\"application/json+oembed\" href=\"{disc_href}\" title=\"{site_name}\">"
 
+    # Optional host normalization: redirect to a preferred host if configured
+    preferred_host = (cfg.get("preferred_host") or "").strip()
+    host_redirect_script = ""
+    if preferred_host:
+        host_redirect_script = (
+            "<script>(function(){try{"
+            "var PH='" + preferred_host + "';"
+            "var h=location.hostname||'';"
+            "if(h && h!==PH && h!=='localhost' && h!=='127.0.0.1'){"
+            "  var proto=(location.protocol||'https:');"
+            "  var url=proto+'//'+PH+location.pathname+location.search+location.hash;"
+            "  if (location.href!==url) location.replace(url);"
+            "}"
+            "}catch(e){}})();</script>"
+        )
+
     html = f"""<!doctype html>
 <html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>{title}</title>
   <meta name=\"description\" content=\"{desc}\">\n  <link rel=\"canonical\" href=\"{canonical}\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:title\" content=\"{title}\">\n  <meta property=\"og:description\" content=\"{desc}\">\n  <meta property=\"og:image\" content=\"{og_image}\">\n  <meta property=\"og:url\" content=\"{canonical}\">\n  {og_extras_block}\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:title\" content=\"{title}\">\n  <meta name=\"twitter:description\" content=\"{desc}\">\n  <meta name=\"twitter:image\" content=\"{og_image}\">\n  <meta name=\"twitter:image:alt\" content=\"{comic['title']}\">\n  {twitter_site_tag}<style>{css}</style>\n  <script src=\"{path_prefix}swipe.js\" defer></script>
+  {host_redirect_script}
 </head>
 <body>
   <header>
