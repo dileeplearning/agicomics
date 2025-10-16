@@ -178,7 +178,7 @@
       "description": "",
       "created": "2022-12-17T16:53:08",
       "ext": ".png",
-      "visible": true
+      "visible": false
     },
     {
       "file": "ag_confidence 2.png",
@@ -205,7 +205,7 @@
       "description": "Probably Approximately Correct (PAC) learning refers to one of the theoretical results in machine learning",
       "created": "2023-08-04T23:18:42",
       "ext": ".png",
-      "visible": true
+      "visible": false
     },
     {
       "file": "ag_strategy 2.png",
@@ -214,7 +214,7 @@
       "description": "",
       "created": "2023-09-09T15:57:23",
       "ext": ".png",
-      "visible": true
+      "visible": false
     },
     {
       "file": "ag_misalignment 2.png",
@@ -264,8 +264,8 @@
     {
       "file": "ag_accomplishment.png",
       "slug": "ag-accomplishment",
-      "title": "Ag Accomplishment",
-      "description": "",
+      "title": "Artificial General Accomplishment",
+      "description": "Moravec's paradox. Tasks that are easy for humans, even kids, are the ones that are hard for AI.",
       "created": "2025-09-17T17:38:16",
       "ext": ".png",
       "visible": true
@@ -273,7 +273,7 @@
     {
       "file": "ag_specialization.png",
       "slug": "ag-specialization",
-      "title": "Ag Specialization",
+      "title": "Artificial General Specialization",
       "description": "",
       "created": "2025-09-21T12:36:27",
       "ext": ".png",
@@ -282,7 +282,7 @@
     {
       "file": "ag_preface 3.png",
       "slug": "ag-preface-3",
-      "title": "Ag Preface 3",
+      "title": "Artificial General Preface",
       "description": "",
       "created": "2025-09-21T12:36:33",
       "ext": ".png",
@@ -291,8 +291,8 @@
     {
       "file": "ag_rule.png",
       "slug": "ag-rule",
-      "title": "Ag Rule",
-      "description": "",
+      "title": "Artificial General Rule",
+      "description": "AI builders often complain that critics are 'moving the goalpost' when they point out the failures of AI. AI. AI sytems are trained to improve on a suite of pre-defined benchmarks. The core of the complaint is that critics are discounting the progress when they test systems outside these benchmarks to show failures. However, moving the goalpost is how AI has always advanced.",
       "created": "2025-09-21T15:52:12",
       "ext": ".png",
       "visible": true
@@ -300,7 +300,7 @@
     {
       "file": "ag_upgrade.png",
       "slug": "ag-upgrade",
-      "title": "Ag Upgrade",
+      "title": "Artificial General Upgrade",
       "description": "",
       "created": "2025-09-22T19:50:20",
       "ext": ".png",
@@ -318,7 +318,7 @@
     {
       "file": "ag_ethics.png",
       "slug": "ag-ethics",
-      "title": "Ag Ethics",
+      "title": "Artificial General Ethics",
       "description": "",
       "created": "2025-09-29T13:35:28",
       "ext": ".png",
@@ -327,8 +327,8 @@
     {
       "file": "ag_sota.png",
       "slug": "ag-sota",
-      "title": "Ag Sota",
-      "description": "",
+      "title": "Artificial General Metric",
+      "description": "SOTA: State of the Art. AI practitioners sometiems have a tendency to worship SOTA models that are based on certain predefined benchmarks, and ignore models that might have good ideas but lag on those benchmarks. Brain not being SOTA is a good enough argument to ignore the brain. ",
       "created": "2025-09-29T13:52:56",
       "ext": ".png",
       "visible": true
@@ -336,8 +336,8 @@
     {
       "file": "ag_breakthrough.png",
       "slug": "ag-breakthrough",
-      "title": "Ag Breakthrough",
-      "description": "",
+      "title": "Artificial General Breakthrough",
+      "description": "Self-congratulatory learning would be a cool name for a real learning algorithm.",
       "created": "2025-09-29T15:02:58",
       "ext": ".png",
       "visible": true
