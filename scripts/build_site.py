@@ -354,6 +354,26 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
             "}catch(e){}})();</script>"
         )
 
+    # Prepare JSON-LD (WebPage + primary image)
+    try:
+        ld_image = {"@type": "ImageObject", "url": og_image_v}
+        if og_width and og_height:
+            ld_image["width"] = int(og_width)
+            ld_image["height"] = int(og_height)
+        ld = {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "headline": title,
+            "url": og_url_v,
+            "image": ld_image,
+            "description": desc,
+        }
+        if (cfg.get("author") or "").strip():
+            ld["author"] = {"@type": "Person", "name": (cfg.get("author") or "").strip()}
+        json_ld_block = json.dumps(ld, ensure_ascii=False)
+    except Exception:
+        json_ld_block = "{}"
+
     html = f"""<!doctype html>
 <html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>{title}</title>
   <meta name=\"description\" content=\"{desc}\">\n  <link rel=\"canonical\" href=\"{canonical}\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:title\" content=\"{title}\">\n  <meta property=\"og:description\" content=\"{desc}\">\n  <meta property=\"og:image\" content=\"{og_image_v}\">\n  <meta property=\"og:image:secure_url\" content=\"{og_image_secure_v}\">\n  <meta property=\"og:url\" content=\"{og_url_v}\">\n  <meta property=\"og:site_name\" content=\"{site_name}\">\n  {og_extras_block}\n  <meta property=\"og:updated_time\" content=\"{updated_time_iso}\">\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:title\" content=\"{title}\">\n  <meta name=\"twitter:description\" content=\"{desc}\">\n  <meta name=\"twitter:image\" content=\"{og_image_v}\">\n  <meta name=\"twitter:image:alt\" content=\"{comic['title']}\">\n  {twitter_site_tag}<style>{css}</style>\n  <script src=\"{path_prefix}swipe.js\" defer></script>
@@ -602,6 +622,11 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
             html = html.replace("</head>", f"  {oembed_tag}\n</head>", 1)
         except Exception:
             pass
+    # Inject JSON-LD just before </head>
+    try:
+        html = html.replace("</head>", f"  <script type=\"application/ld+json\">{json_ld_block}</script>\n</head>", 1)
+    except Exception:
+        pass
     return html
 
 
@@ -661,6 +686,8 @@ def main():
     clean_dir(out_dir)
     images_out = os.path.join(out_dir, "images")
     ensure_dir(images_out)
+    share_out = os.path.join(images_out, "share")
+    ensure_dir(share_out)
 
     # Optional optimization: create webp alongside originals if Pillow is available
     try:
@@ -686,6 +713,29 @@ def main():
                 webp_dest = os.path.join(images_out, f"{c['slug']}.webp")
                 save_kwargs = {"optimize": True, "quality": 80}
                 img.convert("RGBA" if img.mode in ("RGBA", "LA") else "RGB").save(webp_dest, format="WEBP", **save_kwargs)
+                # Generate 1200x630 JPG share image (letterboxed to fit)
+                try:
+                    SHARE_W, SHARE_H = 1200, 630
+                    bg = (11, 15, 26)  # dark background to match site
+                    base = img.convert("RGB")
+                    # Preserve aspect ratio: fit within box
+                    import math
+                    w, h = base.size
+                    if w and h:
+                        scale = min(SHARE_W / float(w), SHARE_H / float(h))
+                        new_w = max(1, int(round(w * scale)))
+                        new_h = max(1, int(round(h * scale)))
+                    else:
+                        new_w, new_h = SHARE_W, SHARE_H
+                    resized = base.resize((new_w, new_h))
+                    canvas = Image.new('RGB', (SHARE_W, SHARE_H), bg)
+                    off_x = (SHARE_W - new_w) // 2
+                    off_y = (SHARE_H - new_h) // 2
+                    canvas.paste(resized, (off_x, off_y))
+                    share_dest = os.path.join(share_out, f"{c['slug']}-1200x630.jpg")
+                    canvas.save(share_dest, format='JPEG', quality=85, optimize=True, progressive=True)
+                except Exception as e:
+                    print(f"NOTE: Could not generate 1200x630 share image for {src}: {e}", file=sys.stderr)
             except Exception as e:
                 print(f"NOTE: Could not generate webp for {src}: {e}", file=sys.stderr)
 
@@ -772,6 +822,10 @@ def main():
         original_image_rel = f"{path_prefix}images/{c['slug']}{c['ext']}"
         webp_rel = f"{path_prefix}images/{c['slug']}.webp"
         image_rel = webp_rel if os.path.exists(os.path.join(images_out, f"{c['slug']}.webp")) else original_image_rel
+        # Prefer generated share image for OG cards if available
+        share_rel = f"{path_prefix}images/share/{c['slug']}-1200x630.jpg"
+        share_abs = os.path.join(images_out, 'share', f"{c['slug']}-1200x630.jpg")
+        og_image_rel = share_rel if os.path.exists(share_abs) else original_image_rel
 
         width = height = None
         if os.path.exists(os.path.join(images_out, f"{c['slug']}.webp")):
@@ -785,16 +839,20 @@ def main():
         numeric_page_rel = f"{path_prefix}{i}/"
         slug_page_rel = f"{path_prefix}c/{c['slug']}/"
 
-        # Determine OG image dimensions and mime type from original image
+        # Determine OG image dimensions and mime type (prefer share image if present)
         og_width = og_height = None
         og_mime = None
         try:
-            ext = (c.get('ext') or '').lower()
-            og_mime = 'image/jpeg' if ext in ('.jpg', '.jpeg') else 'image/png' if ext == '.png' else 'image/webp' if ext == '.webp' else None
-            orig_path = os.path.join(images_out, f"{c['slug']}{c['ext']}")
-            from PIL import Image  # type: ignore
-            with Image.open(orig_path) as im:
-                og_width, og_height = im.size
+            if os.path.exists(share_abs):
+                og_width, og_height = (1200, 630)
+                og_mime = 'image/jpeg'
+            else:
+                ext = (c.get('ext') or '').lower()
+                og_mime = 'image/jpeg' if ext in ('.jpg', '.jpeg') else 'image/png' if ext == '.png' else 'image/webp' if ext == '.webp' else None
+                orig_path = os.path.join(images_out, f"{c['slug']}{c['ext']}")
+                from PIL import Image  # type: ignore
+                with Image.open(orig_path) as im:
+                    og_width, og_height = im.size
         except Exception:
             pass
 
@@ -804,7 +862,7 @@ def main():
             image_url=image_rel,
             page_url=numeric_page_rel,
             canonical_url=slug_page_rel,
-            og_image_url=original_image_rel,
+            og_image_url=og_image_rel,
             width=width,
             height=height,
             og_width=og_width,
@@ -826,7 +884,7 @@ def main():
             image_url=image_rel,
             page_url=slug_page_rel,
             canonical_url=slug_page_rel,
-            og_image_url=original_image_rel,
+            og_image_url=og_image_rel,
             width=width,
             height=height,
             og_width=og_width,
