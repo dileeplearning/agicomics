@@ -712,28 +712,28 @@ def main():
         if have_pillow:
             try:
                 img = Image.open(src)
-                webp_dest = os.path.join(images_out, f"{c['slug']}.webp")
-                # Resize to reduce payload; cap at max dimensions
+                # Generate responsive WebP variants (widths: 640, 980, 1960)
                 try:
                     from PIL import Image as _Image
                     LANCZOS = getattr(_Image, 'LANCZOS', getattr(_Image, 'Resampling', None).LANCZOS if hasattr(getattr(_Image, 'Resampling', None), 'LANCZOS') else _Image.BICUBIC)
                 except Exception:
                     LANCZOS = None
-                base = img.convert("RGBA" if img.mode in ("RGBA", "LA") else "RGB")
-                MAX_W = int(os.environ.get('WEBP_MAX_WIDTH', '1600'))
-                MAX_H = int(os.environ.get('WEBP_MAX_HEIGHT', '1600'))
-                try:
-                    w, h = base.size
-                    scale = min(MAX_W / float(w) if w else 1.0, MAX_H / float(h) if h else 1.0, 1.0)
-                    if scale < 1.0 and LANCZOS is not None:
-                        new_w = max(1, int(round(w * scale)))
-                        new_h = max(1, int(round(h * scale)))
-                        base = base.resize((new_w, new_h), LANCZOS)
-                except Exception:
-                    pass
-                q = int(os.environ.get('WEBP_QUALITY', '82'))
-                save_kwargs = {"optimize": True, "quality": q, "method": 5}
-                base.save(webp_dest, format="WEBP", **save_kwargs)
+                base_rgb = img.convert("RGBA" if img.mode in ("RGBA", "LA") else "RGB")
+                orig_w, orig_h = base_rgb.size
+                for target_w in (640, 980, 1960):
+                    if not orig_w or target_w > orig_w:
+                        # Skip upscaling beyond original width
+                        continue
+                    scale = target_w / float(orig_w)
+                    target_h = max(1, int(round(orig_h * scale)))
+                    resized = base_rgb.resize((target_w, target_h), LANCZOS) if LANCZOS else base_rgb
+                    webp_dest = os.path.join(images_out, f"{c['slug']}-{target_w}.webp")
+                    q = int(os.environ.get('WEBP_QUALITY', '80'))
+                    save_kwargs = {"optimize": True, "quality": q, "method": 5}
+                    try:
+                        resized.save(webp_dest, format="WEBP", **save_kwargs)
+                    except Exception:
+                        pass
                 # Generate 1200x630 JPG share image (letterboxed to fit)
                 try:
                     SHARE_W, SHARE_H = 1200, 630
@@ -841,22 +841,28 @@ def main():
         next_slug = comics[next_index - 1]["slug"]
 
         original_image_rel = f"{path_prefix}images/{c['slug']}{c['ext']}"
-        webp_rel = f"{path_prefix}images/{c['slug']}.webp"
+        # Build list of available WebP variants
+        webp_variants = []
+        for wv in (640, 980, 1960):
+            p = os.path.join(images_out, f"{c['slug']}-{wv}.webp")
+            if os.path.exists(p):
+                webp_variants.append((wv, f"{path_prefix}images/{c['slug']}-{wv}.webp"))
         prefer_webp = bool(cfg.get('prefer_webp'))
-        image_rel = webp_rel if (prefer_webp and os.path.exists(os.path.join(images_out, f"{c['slug']}.webp"))) else original_image_rel
+        # Default display: 980w webp if available, else fallback to original
+        default_webp = next((u for (w,u) in webp_variants if w == 980), None)
+        image_rel = default_webp if (prefer_webp and default_webp) else original_image_rel
         # Prefer generated share image for OG cards if available
         share_rel = f"{path_prefix}images/share/{c['slug']}-1200x630.jpg"
         share_abs = os.path.join(images_out, 'share', f"{c['slug']}-1200x630.jpg")
         og_image_rel = share_rel if os.path.exists(share_abs) else original_image_rel
 
         width = height = None
-        if os.path.exists(os.path.join(images_out, f"{c['slug']}.webp")):
-            try:
-                from PIL import Image  # type: ignore
-                with Image.open(os.path.join(images_out, f"{c['slug']}.webp")) as im:
-                    width, height = im.size
-            except Exception:
-                pass
+        try:
+            from PIL import Image  # type: ignore
+            with Image.open(os.path.join(images_out, f"{c['slug']}{c['ext']}")) as im:
+                width, height = im.size
+        except Exception:
+            pass
 
         numeric_page_rel = f"{path_prefix}{i}/"
         slug_page_rel = f"{path_prefix}c/{c['slug']}/"
@@ -879,6 +885,12 @@ def main():
             pass
 
         # Numeric page that canonicals to slug
+        # Build WebP srcset for <picture>
+        srcset_webp = ""
+        sizes_attr = "(max-width: 980px) 100vw, 980px"
+        if prefer_webp and webp_variants:
+            srcset_webp = ", ".join([f"{u} {w}w" for (w,u) in webp_variants])
+
         html_numeric = render_page_html2(
             cfg, c, i, total, prev_slug, next_slug,
             image_url=image_rel,
@@ -894,6 +906,17 @@ def main():
             build_version=build_version,
             updated_time_iso=updated_time_iso,
         )
+        if srcset_webp:
+            html_numeric = html_numeric.replace(
+                f"<img src=\"{image_rel}\" alt=\"{c['title']}\" loading=\"eager\"{size_attrs}>",
+                (
+                    f"<picture>\n"
+                    f"  <source type=\"image/webp\" srcset=\"{srcset_webp}\" sizes=\"{sizes_attr}\">\n"
+                    f"  <img src=\"{original_image_rel}\" alt=\"{c['title']}\" loading=\"eager\"{size_attrs}>\n"
+                    f"</picture>"
+                ),
+                1,
+            )
         html_numeric = swap_brand_icons(html_numeric, available_icons, path_prefix)
         page_dir = os.path.join(out_dir, str(i))
         ensure_dir(page_dir)
@@ -916,6 +939,17 @@ def main():
             build_version=build_version,
             updated_time_iso=updated_time_iso,
         )
+        if srcset_webp:
+            html_slug = html_slug.replace(
+                f"<img src=\"{image_rel}\" alt=\"{c['title']}\" loading=\"eager\"{size_attrs}>",
+                (
+                    f"<picture>\n"
+                    f"  <source type=\"image/webp\" srcset=\"{srcset_webp}\" sizes=\"{sizes_attr}\">\n"
+                    f"  <img src=\"{original_image_rel}\" alt=\"{c['title']}\" loading=\"eager\"{size_attrs}>\n"
+                    f"</picture>"
+                ),
+                1,
+            )
         html_slug = swap_brand_icons(html_slug, available_icons, path_prefix)
         slug_dir = os.path.join(out_dir, "c", c["slug"])
         ensure_dir(slug_dir)
