@@ -50,6 +50,8 @@ def load_site_config(root):
         # by its slug (e.g., "ag-productivity"). If not set, homepage
         # will mirror the latest comic.
         "homepage_slug": None,
+        # Prefer WebP for display when available
+        "prefer_webp": True,
     }
     cfg_path = os.path.join(root, "site_config.json")
     if os.path.exists(cfg_path):
@@ -711,23 +713,42 @@ def main():
             try:
                 img = Image.open(src)
                 webp_dest = os.path.join(images_out, f"{c['slug']}.webp")
-                save_kwargs = {"optimize": True, "quality": 80}
-                img.convert("RGBA" if img.mode in ("RGBA", "LA") else "RGB").save(webp_dest, format="WEBP", **save_kwargs)
+                # Resize to reduce payload; cap at max dimensions
+                try:
+                    from PIL import Image as _Image
+                    LANCZOS = getattr(_Image, 'LANCZOS', getattr(_Image, 'Resampling', None).LANCZOS if hasattr(getattr(_Image, 'Resampling', None), 'LANCZOS') else _Image.BICUBIC)
+                except Exception:
+                    LANCZOS = None
+                base = img.convert("RGBA" if img.mode in ("RGBA", "LA") else "RGB")
+                MAX_W = int(os.environ.get('WEBP_MAX_WIDTH', '1600'))
+                MAX_H = int(os.environ.get('WEBP_MAX_HEIGHT', '1600'))
+                try:
+                    w, h = base.size
+                    scale = min(MAX_W / float(w) if w else 1.0, MAX_H / float(h) if h else 1.0, 1.0)
+                    if scale < 1.0 and LANCZOS is not None:
+                        new_w = max(1, int(round(w * scale)))
+                        new_h = max(1, int(round(h * scale)))
+                        base = base.resize((new_w, new_h), LANCZOS)
+                except Exception:
+                    pass
+                q = int(os.environ.get('WEBP_QUALITY', '82'))
+                save_kwargs = {"optimize": True, "quality": q, "method": 5}
+                base.save(webp_dest, format="WEBP", **save_kwargs)
                 # Generate 1200x630 JPG share image (letterboxed to fit)
                 try:
                     SHARE_W, SHARE_H = 1200, 630
                     bg = (11, 15, 26)  # dark background to match site
-                    base = img.convert("RGB")
+                    base2 = img.convert("RGB")
                     # Preserve aspect ratio: fit within box
                     import math
-                    w, h = base.size
+                    w, h = base2.size
                     if w and h:
                         scale = min(SHARE_W / float(w), SHARE_H / float(h))
                         new_w = max(1, int(round(w * scale)))
                         new_h = max(1, int(round(h * scale)))
                     else:
                         new_w, new_h = SHARE_W, SHARE_H
-                    resized = base.resize((new_w, new_h))
+                    resized = base2.resize((new_w, new_h), LANCZOS if LANCZOS is not None else None)
                     canvas = Image.new('RGB', (SHARE_W, SHARE_H), bg)
                     off_x = (SHARE_W - new_w) // 2
                     off_y = (SHARE_H - new_h) // 2
@@ -821,7 +842,8 @@ def main():
 
         original_image_rel = f"{path_prefix}images/{c['slug']}{c['ext']}"
         webp_rel = f"{path_prefix}images/{c['slug']}.webp"
-        image_rel = webp_rel if os.path.exists(os.path.join(images_out, f"{c['slug']}.webp")) else original_image_rel
+        prefer_webp = bool(cfg.get('prefer_webp'))
+        image_rel = webp_rel if (prefer_webp and os.path.exists(os.path.join(images_out, f"{c['slug']}.webp"))) else original_image_rel
         # Prefer generated share image for OG cards if available
         share_rel = f"{path_prefix}images/share/{c['slug']}-1200x630.jpg"
         share_abs = os.path.join(images_out, 'share', f"{c['slug']}-1200x630.jpg")
