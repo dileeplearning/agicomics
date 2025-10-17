@@ -748,7 +748,10 @@ def main():
                         new_h = max(1, int(round(h * scale)))
                     else:
                         new_w, new_h = SHARE_W, SHARE_H
-                    resized = base2.resize((new_w, new_h), LANCZOS if LANCZOS is not None else None)
+                    if LANCZOS is not None:
+                        resized = base2.resize((new_w, new_h), LANCZOS)
+                    else:
+                        resized = base2.resize((new_w, new_h))
                     canvas = Image.new('RGB', (SHARE_W, SHARE_H), bg)
                     off_x = (SHARE_W - new_w) // 2
                     off_y = (SHARE_H - new_h) // 2
@@ -907,12 +910,18 @@ def main():
             updated_time_iso=updated_time_iso,
         )
         if srcset_webp:
+            size_attrs_str = ""
+            try:
+                if width and height:
+                    size_attrs_str = f" width=\"{int(width)}\" height=\"{int(height)}\""
+            except Exception:
+                size_attrs_str = ""
             html_numeric = html_numeric.replace(
-                f"<img src=\"{image_rel}\" alt=\"{c['title']}\" loading=\"eager\"{size_attrs}>",
+                f"<img src=\"{image_rel}\" alt=\"{c['title']}\" loading=\"eager\"{size_attrs_str}>",
                 (
                     f"<picture>\n"
                     f"  <source type=\"image/webp\" srcset=\"{srcset_webp}\" sizes=\"{sizes_attr}\">\n"
-                    f"  <img src=\"{original_image_rel}\" alt=\"{c['title']}\" loading=\"eager\"{size_attrs}>\n"
+                    f"  <img src=\"{original_image_rel}\" alt=\"{c['title']}\" loading=\"eager\"{size_attrs_str}>\n"
                     f"</picture>"
                 ),
                 1,
@@ -940,12 +949,18 @@ def main():
             updated_time_iso=updated_time_iso,
         )
         if srcset_webp:
+            size_attrs_str = ""
+            try:
+                if width and height:
+                    size_attrs_str = f" width=\"{int(width)}\" height=\"{int(height)}\""
+            except Exception:
+                size_attrs_str = ""
             html_slug = html_slug.replace(
-                f"<img src=\"{image_rel}\" alt=\"{c['title']}\" loading=\"eager\"{size_attrs}>",
+                f"<img src=\"{image_rel}\" alt=\"{c['title']}\" loading=\"eager\"{size_attrs_str}>",
                 (
                     f"<picture>\n"
                     f"  <source type=\"image/webp\" srcset=\"{srcset_webp}\" sizes=\"{sizes_attr}\">\n"
-                    f"  <img src=\"{original_image_rel}\" alt=\"{c['title']}\" loading=\"eager\"{size_attrs}>\n"
+                    f"  <img src=\"{original_image_rel}\" alt=\"{c['title']}\" loading=\"eager\"{size_attrs_str}>\n"
                     f"</picture>"
                 ),
                 1,
