@@ -4,6 +4,8 @@ import os
 import re
 import shutil
 import sys
+import time
+import subprocess
 from urllib.parse import quote_plus
 
 
@@ -235,12 +237,29 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     return html
 
 
-def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url, page_url, canonical_url, og_image_url, width=None, height=None, path_prefix="/", og_width=None, og_height=None, og_mime=None):
+def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url, page_url, canonical_url, og_image_url, width=None, height=None, path_prefix="/", og_width=None, og_height=None, og_mime=None, build_version=None, updated_time_iso=None):
     site_name = cfg["site_name"]
     title = f"{site_name} — #{index}: {comic['title']}"
     desc = comic.get("description") or cfg.get("description") or comic['title']
     og_image = to_absolute(cfg["base_url"], og_image_url)
     canonical = to_absolute(cfg["base_url"], canonical_url)
+
+    # Append cache-busting version to OG URLs to force refresh on social platforms
+    def _with_v(u: str) -> str:
+        try:
+            if not build_version:
+                return u
+            from urllib.parse import urlparse, parse_qsl, urlencode, urlunparse
+            p = urlparse(u)
+            q = dict(parse_qsl(p.query))
+            q['v'] = str(build_version)
+            return urlunparse(p._replace(query=urlencode(q)))
+        except Exception:
+            return u
+
+    og_image_v = _with_v(og_image)
+    og_image_secure_v = og_image_v
+    og_url_v = _with_v(canonical)
 
     share_text = f"{comic['title']}"
     share_url = canonical
@@ -337,7 +356,7 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
 
     html = f"""<!doctype html>
 <html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>{title}</title>
-  <meta name=\"description\" content=\"{desc}\">\n  <link rel=\"canonical\" href=\"{canonical}\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:title\" content=\"{title}\">\n  <meta property=\"og:description\" content=\"{desc}\">\n  <meta property=\"og:image\" content=\"{og_image}\">\n  <meta property=\"og:image:secure_url\" content=\"{og_image}\">\n  <meta property=\"og:url\" content=\"{canonical}\">\n  <meta property=\"og:site_name\" content=\"{site_name}\">\n  {og_extras_block}\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:title\" content=\"{title}\">\n  <meta name=\"twitter:description\" content=\"{desc}\">\n  <meta name=\"twitter:image\" content=\"{og_image}\">\n  <meta name=\"twitter:image:alt\" content=\"{comic['title']}\">\n  {twitter_site_tag}<style>{css}</style>\n  <script src=\"{path_prefix}swipe.js\" defer></script>
+  <meta name=\"description\" content=\"{desc}\">\n  <link rel=\"canonical\" href=\"{canonical}\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:title\" content=\"{title}\">\n  <meta property=\"og:description\" content=\"{desc}\">\n  <meta property=\"og:image\" content=\"{og_image_v}\">\n  <meta property=\"og:image:secure_url\" content=\"{og_image_secure_v}\">\n  <meta property=\"og:url\" content=\"{og_url_v}\">\n  <meta property=\"og:site_name\" content=\"{site_name}\">\n  {og_extras_block}\n  <meta property=\"og:updated_time\" content=\"{updated_time_iso}\">\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:title\" content=\"{title}\">\n  <meta name=\"twitter:description\" content=\"{desc}\">\n  <meta name=\"twitter:image\" content=\"{og_image_v}\">\n  <meta name=\"twitter:image:alt\" content=\"{comic['title']}\">\n  {twitter_site_tag}<style>{css}</style>\n  <script src=\"{path_prefix}swipe.js\" defer></script>
   {host_redirect_script}
 </head>
 <body>
@@ -719,6 +738,25 @@ def main():
     except Exception:
         pass
 
+    # Determine build version for cache-busting of OG assets
+    def _compute_build_version():
+        v = os.environ.get('BUILD_VERSION')
+        if v:
+            return v
+        try:
+            v = subprocess.check_output(['git','rev-parse','--short','HEAD'], cwd=root).decode('utf-8').strip()
+            if v:
+                return v
+        except Exception:
+            pass
+        try:
+            return str(int(time.time()))
+        except Exception:
+            return None
+
+    build_version = _compute_build_version()
+    updated_time_iso = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
+
     # Generate per-index pages and slug permalinks
     latest_index = total
     latest_html = None
@@ -773,6 +811,8 @@ def main():
             og_height=og_height,
             og_mime=og_mime,
             path_prefix=path_prefix,
+            build_version=build_version,
+            updated_time_iso=updated_time_iso,
         )
         html_numeric = swap_brand_icons(html_numeric, available_icons, path_prefix)
         page_dir = os.path.join(out_dir, str(i))
@@ -793,6 +833,8 @@ def main():
             og_height=og_height,
             og_mime=og_mime,
             path_prefix=path_prefix,
+            build_version=build_version,
+            updated_time_iso=updated_time_iso,
         )
         html_slug = swap_brand_icons(html_slug, available_icons, path_prefix)
         slug_dir = os.path.join(out_dir, "c", c["slug"])
