@@ -8,5 +8,6 @@
   "explanation_label": "Explainer",
   "homepage_slug": "ag-productivity",
   "likes_api_base": "https://script.google.com/macros/s/AKfycbxsMQE_DTtT6umyhvr7W1dXPlLlYSZcA3qVjPm_v0u28V0A8ZjoltzN_zeWjQL_yA/exec",
-  "preferred_host": "www.agicomics.net"
+  "preferred_host": "www.agicomics.net",
+  "prefer_webp": false
 }
