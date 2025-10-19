@@ -971,6 +971,57 @@ def main():
         with open(os.path.join(slug_dir, "index.html"), "w", encoding="utf-8") as f:
             f.write(html_slug)
 
+        # Optional alias slug pages that canonical to the main slug
+        aliases = []
+        try:
+            v_alias = c.get('aliases')
+            if isinstance(v_alias, list):
+                aliases = [str(a).strip() for a in v_alias if isinstance(a, (str,)) and str(a).strip()]
+        except Exception:
+            aliases = []
+        for alias in aliases:
+            try:
+                alias_page_rel = f"{path_prefix}c/{alias}/"
+                html_alias = render_page_html2(
+                    cfg, c, i, total, prev_slug, next_slug,
+                    image_url=image_rel,
+                    page_url=alias_page_rel,
+                    canonical_url=slug_page_rel,
+                    og_image_url=og_image_rel,
+                    width=width,
+                    height=height,
+                    og_width=og_width,
+                    og_height=og_height,
+                    og_mime=og_mime,
+                    path_prefix=path_prefix,
+                    build_version=build_version,
+                    updated_time_iso=updated_time_iso,
+                )
+                if srcset_webp:
+                    size_attrs_str = ""
+                    try:
+                        if width and height:
+                            size_attrs_str = f" width=\\\"{int(width)}\\\" height=\\\"{int(height)}\\\""
+                    except Exception:
+                        size_attrs_str = ""
+                    html_alias = html_alias.replace(
+                        f"<img src=\\\"{image_rel}\\\" alt=\\\"{c['title']}\\\" loading=\\\"eager\\\"{size_attrs_str}>",
+                        (
+                            f"<picture>\\n"
+                            f"  <source type=\\\"image/webp\\\" srcset=\\\"{srcset_webp}\\\" sizes=\\\"{sizes_attr}\\\">\\n"
+                            f"  <img src=\\\"{original_image_rel}\\\" alt=\\\"{c['title']}\\\" loading=\\\"eager\\\"{size_attrs_str}>\\n"
+                            f"</picture>"
+                        ),
+                        1,
+                    )
+                html_alias = swap_brand_icons(html_alias, available_icons, path_prefix)
+                alias_dir = os.path.join(out_dir, "c", alias)
+                ensure_dir(alias_dir)
+                with open(os.path.join(alias_dir, "index.html"), "w", encoding="utf-8") as f:
+                    f.write(html_alias)
+            except Exception:
+                pass
+
         if i == latest_index:
             latest_html = html_slug
         if homepage_slug and c.get('slug') == homepage_slug:

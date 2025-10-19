@@ -332,7 +332,8 @@
     },
     {
       "file": "ag_dilemma2 2.png",
-      "slug": "ag-dilemma2-2-2",
+      "slug": "ag-dilemma2-2",
+      "aliases": ["ag-dilemma2-2-2"],
       "title": "Artificial General Dilemma",
       "description": "",
       "created": "2019-11-15T23:01:57",
