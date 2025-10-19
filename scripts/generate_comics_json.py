@@ -92,6 +92,13 @@ def main():
             created_out = prev.get("created") or created
             # Preserve explicit order if present and integer
             order_val = prev.get("order") if isinstance(prev.get("order"), int) else None
+            # Preserve aliases if present and well-formed list of strings
+            aliases_val = None
+            try:
+                if isinstance(prev.get("aliases"), list):
+                    aliases_val = [str(x) for x in prev.get("aliases") if isinstance(x, str) and x.strip()]
+            except Exception:
+                aliases_val = None
         else:
             slug = slugify(name)
             base_slug = slug
@@ -106,6 +113,7 @@ def main():
             visible = True
             created_out = created
             order_val = None
+            aliases_val = None
 
         entry = {
             "file": name,
@@ -118,6 +126,8 @@ def main():
         }
         if order_val is not None:
             entry["order"] = order_val
+        if aliases_val:
+            entry["aliases"] = aliases_val
         comics.append(entry)
 
     out = {"comics": comics}

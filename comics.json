@@ -8,7 +8,10 @@
       "created": "2019-03-11T10:40:37",
       "ext": ".png",
       "visible": true,
-      "order": 10
+      "order": 10,
+      "aliases": [
+        "ag-generality-2"
+      ]
     },
     {
       "file": "agi_equivalence 2.png",
@@ -18,7 +21,10 @@
       "created": "2019-03-16T21:58:03",
       "ext": ".png",
       "visible": true,
-      "order": 20
+      "order": 20,
+      "aliases": [
+        "agi-equivalence-2"
+      ]
     },
     {
       "file": "agi_generality 2.png",
@@ -28,7 +34,10 @@
       "created": "2019-03-16T21:58:40",
       "ext": ".png",
       "visible": true,
-      "order": 30
+      "order": 30,
+      "aliases": [
+        "agi-generality-2"
+      ]
     },
     {
       "file": "agi_irrelevance 2.png",
@@ -38,7 +47,10 @@
       "created": "2019-03-16T21:59:34",
       "ext": ".png",
       "visible": true,
-      "order": 40
+      "order": 40,
+      "aliases": [
+        "agi-irrelevance-2"
+      ]
     },
     {
       "file": "agi_humility 2.png",
@@ -48,7 +60,10 @@
       "created": "2019-03-16T22:00:12",
       "ext": ".png",
       "visible": true,
-      "order": 50
+      "order": 50,
+      "aliases": [
+        "agi-humility-2"
+      ]
     },
     {
       "file": "ag_alignment 2.png",
@@ -58,7 +73,10 @@
       "created": "2019-04-28T10:56:25",
       "ext": ".png",
       "visible": true,
-      "order": 60
+      "order": 60,
+      "aliases": [
+        "ag-alignment-2"
+      ]
     },
     {
       "file": "agi_definition 2.png",
@@ -68,7 +86,10 @@
       "created": "2019-06-07T22:19:26",
       "ext": ".png",
       "visible": true,
-      "order": 70
+      "order": 70,
+      "aliases": [
+        "agi-definition-2"
+      ]
     },
     {
       "file": "ag_reality 2.png",
@@ -78,7 +99,10 @@
       "created": "2019-09-07T15:23:29",
       "ext": ".png",
       "visible": true,
-      "order": 80
+      "order": 80,
+      "aliases": [
+        "ag-reality-2"
+      ]
     },
     {
       "file": "ag_inspiration 2.png",
@@ -88,7 +112,10 @@
       "created": "2019-09-27T17:35:00",
       "ext": ".png",
       "visible": true,
-      "order": 90
+      "order": 90,
+      "aliases": [
+        "ag-inspiration-2"
+      ]
     },
     {
       "file": "ag_preface 2.png",
@@ -98,7 +125,10 @@
       "created": "2019-10-22T22:30:24",
       "ext": ".png",
       "visible": false,
-      "order": 100
+      "order": 100,
+      "aliases": [
+        "ag-preface-2"
+      ]
     },
     {
       "file": "ag_future 2.png",
@@ -108,7 +138,10 @@
       "created": "2019-11-07T22:49:27",
       "ext": ".png",
       "visible": true,
-      "order": 110
+      "order": 110,
+      "aliases": [
+        "ag-future-2"
+      ]
     },
     {
       "file": "ag_debate 2.png",
@@ -118,7 +151,10 @@
       "created": "2019-11-16T15:38:04",
       "ext": ".png",
       "visible": true,
-      "order": 120
+      "order": 120,
+      "aliases": [
+        "ag-debate-2"
+      ]
     },
     {
       "file": "ag_wish 2.png",
@@ -128,7 +164,10 @@
       "created": "2019-12-31T16:16:27",
       "ext": ".png",
       "visible": true,
-      "order": 130
+      "order": 130,
+      "aliases": [
+        "ag-wish-2"
+      ]
     },
     {
       "file": "ag_viewpoints 2.png",
@@ -138,7 +177,10 @@
       "created": "2020-03-03T23:41:37",
       "ext": ".png",
       "visible": true,
-      "order": 140
+      "order": 140,
+      "aliases": [
+        "ag-viewpoints-2"
+      ]
     },
     {
       "file": "ag joke 2.png",
@@ -148,7 +190,10 @@
       "created": "2020-07-25T20:08:20",
       "ext": ".png",
       "visible": true,
-      "order": 150
+      "order": 150,
+      "aliases": [
+        "ag-joke-2"
+      ]
     },
     {
       "file": "ag_emergence 2.png",
@@ -158,7 +203,10 @@
       "created": "2020-09-01T04:28:02",
       "ext": ".png",
       "visible": true,
-      "order": 160
+      "order": 160,
+      "aliases": [
+        "ag-emergence-2"
+      ]
     },
     {
       "file": "ag_dichotomy 2.png",
@@ -168,7 +216,10 @@
       "created": "2022-05-24T02:04:31",
       "ext": ".png",
       "visible": true,
-      "order": 170
+      "order": 170,
+      "aliases": [
+        "ag-dichotomy-2"
+      ]
     },
     {
       "file": "ag_count 2.png",
@@ -178,7 +229,10 @@
       "created": "2022-12-06T01:22:30",
       "ext": ".png",
       "visible": true,
-      "order": 180
+      "order": 180,
+      "aliases": [
+        "ag-count-2"
+      ]
     },
     {
       "file": "ag_risk 2.png",
@@ -188,7 +242,10 @@
       "created": "2022-12-08T16:00:19",
       "ext": ".png",
       "visible": false,
-      "order": 190
+      "order": 190,
+      "aliases": [
+        "ag-risk-2"
+      ]
     },
     {
       "file": "ag_goalpost 2.png",
@@ -198,7 +255,10 @@
       "created": "2022-12-17T16:53:08",
       "ext": ".png",
       "visible": false,
-      "order": 200
+      "order": 200,
+      "aliases": [
+        "ag-goalpost-2"
+      ]
     },
     {
       "file": "ag_confidence 2.png",
@@ -208,7 +268,10 @@
       "created": "2023-03-26T17:28:37",
       "ext": ".png",
       "visible": true,
-      "order": 210
+      "order": 210,
+      "aliases": [
+        "ag-confidence-2"
+      ]
     },
     {
       "file": "ag_open 2.png",
@@ -218,7 +281,10 @@
       "created": "2023-03-26T17:29:03",
       "ext": ".png",
       "visible": true,
-      "order": 220
+      "order": 220,
+      "aliases": [
+        "ag-open-2"
+      ]
     },
     {
       "file": "ag_consciousness 2.png",
@@ -228,7 +294,10 @@
       "created": "2023-08-04T23:18:42",
       "ext": ".png",
       "visible": false,
-      "order": 230
+      "order": 230,
+      "aliases": [
+        "ag-consciousness-2"
+      ]
     },
     {
       "file": "ag_strategy 2.png",
@@ -238,7 +307,10 @@
       "created": "2023-09-09T15:57:23",
       "ext": ".png",
       "visible": false,
-      "order": 240
+      "order": 240,
+      "aliases": [
+        "ag-strategy-2"
+      ]
     },
     {
       "file": "ag_misalignment 2.png",
@@ -248,7 +320,10 @@
       "created": "2024-09-05T08:16:35",
       "ext": ".png",
       "visible": true,
-      "order": 250
+      "order": 250,
+      "aliases": [
+        "ag-misalignment-2"
+      ]
     },
     {
       "file": "ag_philosophy3 2.png",
@@ -258,7 +333,10 @@
       "created": "2024-09-05T08:29:14",
       "ext": ".png",
       "visible": true,
-      "order": 260
+      "order": 260,
+      "aliases": [
+        "ag-philosophy3-2"
+      ]
     },
     {
       "file": "ag_productivity.png",
@@ -333,7 +411,9 @@
     {
       "file": "ag_dilemma2 2.png",
       "slug": "ag-dilemma2-2",
-      "aliases": ["ag-dilemma2-2-2"],
+      "aliases": [
+        "ag-dilemma2-2-2"
+      ],
       "title": "Artificial General Dilemma",
       "description": "",
       "created": "2019-11-15T23:01:57",
@@ -374,7 +454,7 @@
     {
       "file": "ag_synergy 2.png",
       "slug": "ag-synergy-2",
-      "title": "Ag Synergy 2",
+      "title": "Artificial General Synergy",
       "description": "",
       "created": "2025-10-16T18:45:10",
       "ext": ".png",
