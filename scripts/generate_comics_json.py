@@ -90,6 +90,8 @@ def main():
             visible = prev.get("visible") if isinstance(prev.get("visible"), bool) else True
             # Preserve existing created date if available, otherwise use file mtime
             created_out = prev.get("created") or created
+            # Preserve explicit order if present and integer
+            order_val = prev.get("order") if isinstance(prev.get("order"), int) else None
         else:
             slug = slugify(name)
             base_slug = slug
@@ -103,8 +105,9 @@ def main():
             desc = ""
             visible = True
             created_out = created
+            order_val = None
 
-        comics.append({
+        entry = {
             "file": name,
             "slug": slug,
             "title": title,
@@ -112,7 +115,10 @@ def main():
             "created": created_out,
             "ext": ext,
             "visible": visible,
-        })
+        }
+        if order_val is not None:
+            entry["order"] = order_val
+        comics.append(entry)
 
     out = {"comics": comics}
     with open(out_path, "w", encoding="utf-8") as f:
