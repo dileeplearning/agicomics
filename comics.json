@@ -222,19 +222,6 @@
       ]
     },
     {
-      "file": "ag_count 2.png",
-      "slug": "ag-count-2-2",
-      "title": "Artificial General Count",
-      "description": "",
-      "created": "2022-12-06T01:22:30",
-      "ext": ".png",
-      "visible": true,
-      "order": 180,
-      "aliases": [
-        "ag-count-2"
-      ]
-    },
-    {
       "file": "ag_risk 2.png",
       "slug": "ag-risk-2-2",
       "title": "Artificial General Risk",
@@ -411,15 +398,15 @@
     {
       "file": "ag_dilemma2 2.png",
       "slug": "ag-dilemma2-2",
-      "aliases": [
-        "ag-dilemma2-2-2"
-      ],
       "title": "Artificial General Dilemma",
       "description": "",
       "created": "2019-11-15T23:01:57",
       "ext": ".png",
       "visible": true,
-      "order": 3
+      "order": 3,
+      "aliases": [
+        "ag-dilemma2-2-2"
+      ]
     },
     {
       "file": "ag_ethics.png",
@@ -459,6 +446,19 @@
       "created": "2025-10-16T18:45:10",
       "ext": ".png",
       "visible": true
+    },
+    {
+      "file": "ag_count 2.png",
+      "slug": "ag-count-2-2",
+      "title": "Artificial General Count",
+      "description": "",
+      "created": "2022-12-06T01:22:30",
+      "ext": ".png",
+      "visible": true,
+      "order": 31,
+      "aliases": [
+        "ag-count-2"
+      ]
     }
   ]
 }
