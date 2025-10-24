@@ -163,11 +163,12 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .like-btn .heart{display:inline-block;font-size:4.0em;line-height:1;color:#ff2d55}
     .plus-one{position:absolute;top:-6px;left:50%;transform:translate(-50%,0);color:#ff6b81;font-weight:700;opacity:0;animation:plus1 450ms ease-out forwards;pointer-events:none;z-index:2}
     @keyframes plus1{0%{opacity:0;transform:translate(-50%,0)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-22px)}}
-    details.expl{margin-top:12px;max-width:800px;text-align:left;background:#111521;border:1px solid #1f2633;border-radius:8px;overflow:hidden}
-    details.expl summary{cursor:pointer;list-style:none;padding:10px 12px;font-weight:600;color:#dbe3ff;background:#0f1420}
-    details.expl[open] summary{border-bottom:1px solid #1f2633}
-    details.expl .content{padding:10px 12px;color:#c9ced6;line-height:1.6}
-    details.expl .content p{margin:0 0 10px}
+    /* Description block with 4-line clamp + expand */
+    .expl{margin-top:12px;max-width:800px;text-align:left;background:#111521;border:1px solid #1f2633;border-radius:8px}
+    .expl .content{padding:10px 12px;color:#c9ced6;line-height:1.6;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;max-height:calc(1.6em * 4)}
+    .expl .content p{margin:0 0 10px}
+    .expl.open .content{display:block;overflow:visible;-webkit-line-clamp:unset;max-height:none}
+    .expl .exp-toggle{width:100%;text-align:center;cursor:pointer;display:block;background:#0f1420;color:#dbe3ff;border:0;border-top:1px solid #1f2633;padding:10px 12px;font-weight:600}
     a{color:var(--link);text-decoration:none}
     a:hover{color:var(--link-hover)}
     .nav-btn{position:absolute;top:-36px;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:16px;background:#151922;border:1px solid #222937;color:#dbe3ff;text-decoration:none}
@@ -189,16 +190,16 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
     .search .item.active em{color:#bfdbfe}
     """
 
-    # Optional collapsible explanation block (from description)
+    # Optional description block: show 4 lines by default; expandable
     explanation_html = ""
     _desc = (comic.get("description") or "").strip()
     if _desc:
-        expl_label = cfg.get("explanation_label") or "Explanation"
+        expl_label = (cfg.get("explanation_label") or "Explanation").strip() or "Explanation"
         explanation_html = (
-            f'<details class="expl">'
-            f'<summary>{expl_label}</summary>'
+            f'<div class="expl">'
             f'<div class="content">{comic.get("description", "")}</div>'
-            f'</details>'
+            f'<button class="exp-toggle" type="button" aria-expanded="false">Show more — {expl_label}</button>'
+            f'</div>'
         )
 
     html = f"""<!doctype html>
@@ -236,6 +237,21 @@ def render_page_html(cfg, comic, index, total, prev_index, next_index, image_url
   
 </body>
 </html>"""
+    # Add a tiny script to toggle description expansion and hide the button if not needed
+    try:
+        toggle_js = (
+            "<script>(function(){try{var x=document.querySelector('.expl');"
+            "if(!x) return; var c=x.querySelector('.content'); var b=x.querySelector('.exp-toggle');"
+            "if(!c||!b) return; function needsToggle(){return c.scrollHeight>c.clientHeight+1;}"
+            "function setOpen(v){ x.classList.toggle('open', v); b.setAttribute('aria-expanded', v?'true':'false'); b.textContent = (v?'Show less — ':'Show more — ') + (b.textContent.split(' — ').pop()||'Explanation'); }"
+            "function init(){ if(!needsToggle()){ b.style.display='none'; } else { b.style.display='block'; } }"
+            "b.addEventListener('click', function(){ setOpen(!x.classList.contains('open')); });"
+            "setTimeout(init,0); window.addEventListener('resize', function(){ setTimeout(init,0); });"
+            "}catch(e){}})();</script>"
+        )
+        html = html.replace("</body>", toggle_js + "\n</body>")
+    except Exception:
+        pass
     return html
 
 
@@ -294,6 +310,12 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
     .share a:hover{color:var(--link-hover)}
     .share img{width:22px;height:22px;display:block}
     .desc{margin-top:8px;max-width:800px;color:#d0d4d9;text-align:center}
+    /* Description block with 4-line clamp + expand */
+    .expl{margin-top:12px;max-width:800px;text-align:left;background:#111521;border:1px solid #1f2633;border-radius:8px}
+    .expl .content{padding:10px 12px;color:#c9ced6;line-height:1.6;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;max-height:calc(1.6em * 4)}
+    .expl .content p{margin:0 0 10px}
+    .expl.open .content{display:block;overflow:visible;-webkit-line-clamp:unset;max-height:none}
+    .expl .exp-toggle{width:100%;text-align:center;cursor:pointer;display:block;background:#0f1420;color:#dbe3ff;border:0;border-top:1px solid #1f2633;padding:10px 12px;font-weight:600}
     a{color:var(--link);text-decoration:none}
     a:hover{color:var(--link-hover)}
     .nav-btn{position:absolute;top:-36px;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:16px;background:#151922;border:1px solid #222937;color:#dbe3ff;text-decoration:none}
@@ -318,16 +340,16 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
         og_extras.append(f'<meta property="og:image:type" content="{og_mime}">')
     og_extras_block = "\n  ".join(og_extras)
 
-    # Build optional explanation block from description
+    # Build description block with line clamp + toggle
     explanation_html = ""
     desc_val = (comic.get('description') or '').strip()
     if desc_val:
-        expl_label2 = cfg.get("explanation_label") or "Explanation"
+        expl_label2 = (cfg.get("explanation_label") or "Explanation").strip() or "Explanation"
         explanation_html = (
-            f'<details class="expl">'
-            f'<summary>{expl_label2}</summary>'
+            f'<div class="expl">'
             f'<div class="content">{comic.get("description","")}</div>'
-            f'</details>'
+            f'<button class="exp-toggle" type="button" aria-expanded="false">Show more — {expl_label2}</button>'
+            f'</div>'
         )
 
     size_attrs = ""
@@ -627,6 +649,21 @@ def render_page_html2(cfg, comic, index, total, prev_slug, next_slug, image_url,
     # Inject JSON-LD just before </head>
     try:
         html = html.replace("</head>", f"  <script type=\"application/ld+json\">{json_ld_block}</script>\n</head>", 1)
+    except Exception:
+        pass
+    # Add a tiny script to toggle description expansion and hide the button if not needed
+    try:
+        toggle_js = (
+            "<script>(function(){try{var x=document.querySelector('.expl');"
+            "if(!x) return; var c=x.querySelector('.content'); var b=x.querySelector('.exp-toggle');"
+            "if(!c||!b) return; function needsToggle(){return c.scrollHeight>c.clientHeight+1;}"
+            "function setOpen(v){ x.classList.toggle('open', v); b.setAttribute('aria-expanded', v?'true':'false'); b.textContent = (v?'Show less — ':'Show more — ') + (b.textContent.split(' — ').pop()||'Explanation'); }"
+            "function init(){ if(!needsToggle()){ b.style.display='none'; } else { b.style.display='block'; } }"
+            "b.addEventListener('click', function(){ setOpen(!x.classList.contains('open')); });"
+            "setTimeout(init,0); window.addEventListener('resize', function(){ setTimeout(init,0); });"
+            "}catch(e){}})();</script>"
+        )
+        html = html.replace("</body>", toggle_js + "\n</body>")
     except Exception:
         pass
     return html
