@@ -459,6 +459,15 @@
       "aliases": [
         "ag-count-2"
       ]
+    },
+    {
+      "file": "artificial general injury.png",
+      "slug": "artificial-general-injury",
+      "title": "Artificial General Injury",
+      "description": "",
+      "created": "2025-10-24T16:58:16",
+      "ext": ".png",
+      "visible": true
     }
   ]
 }
