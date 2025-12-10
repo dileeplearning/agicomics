@@ -468,6 +468,15 @@
       "created": "2025-10-24T16:58:16",
       "ext": ".png",
       "visible": true
+    },
+    {
+      "file": "artificial_general_scholarship.png",
+      "slug": "artificial-general-scholarship",
+      "title": "Artificial General Scholarship",
+      "description": "In academia, it's not just the citation counts that counts",
+      "created": "2025-12-09T22:31:45",
+      "ext": ".png",
+      "visible": true
     }
   ]
 }
